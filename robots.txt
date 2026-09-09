@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block access to internal/config files
+Disallow: /.git/
+Disallow: /.gitignore
+Disallow: /.env
+
+# Sitemap location
+Sitemap: https://berkcicekk.github.io/rbclabs/sitemap.xml

@@ -1,0 +1,53 @@
+# rbclabs
+
+> Personal portfolio and project showcase for Berk Çiçek — DevOps engineer, platform builder and Web3 developer based in Turkey.
+
+rbclabs is a static, multilingual (Turkish / English / German) personal website that documents Berk Çiçek's professional work, open-source projects, hackathon achievements and technical writing. The site has no backend; all content is rendered as plain HTML with Tailwind CSS for styling and vanilla JavaScript for interactivity and i18n.
+
+## Pages
+
+- [Home](https://berkcicekk.github.io/rbclabs/index.html): Hero section with role overview (DevOps Engineer), key stats (10+ hackathons, 6 top rankings), a "currently building" card for the CENK Project (5G security research), and a link to the writing library.
+- [Projects](https://berkcicekk.github.io/rbclabs/projects.html): Selected work including Joins (Turkish live quiz platform), zk-File Transfer (award-winning zero-knowledge file transfer on Solana), BLAZR (Algorand micro-investment app, ALGOHACK 2nd place), Launchpad Project (MINA smart contracts, zk-Ignite Cohort 3 grant) and a Startup Weekend mobile app concept.
+- [Experience](https://berkcicekk.github.io/rbclabs/experience.html): Chronological work history — Cyrops (Cyber Security Specialist, 2025–present), Cuberium / Siber Vatan (Team Lead & Web3 Developer, 2022–2024), Turkcell Technology (Software Developer Intern, Jul–Sep 2024), Serim Software (Backend Developer Intern, Aug–Sep 2023). Education: Computer Engineering, Bülent Ecevit University (2021–2026). Awards: HackSolana #1/20 (SuperteamTR, Nov 2024), SuperteamTR Local Grant (Dec 2024), BLAZR #2 ALGOHACK (Rise In, Istanbul), MINA zk-Ignite Cohort 3 Grant (Mar 2024), Startup Weekend #3 Zonguldak (Mar 2023), Ödeal GPT AI Hackathon Finalist (Nov 2023).
+- [Writing](https://berkcicekk.github.io/rbclabs/writing.html): Technical articles published on Medium (@cckberk) covering blockchain security (Blockchain Hack Vaka Analizi), zero-knowledge proofs, Solidity smart contract development (5-part series), and blockchain ecosystems (Togg Mobility, Developer Toolbox, Para Nedir?).
+
+## Owner
+
+- **Name:** Berk Çiçek
+- **Role:** DevOps Engineer · Cyber Security Specialist · Web3 Developer
+- **GitHub:** https://github.com/berkcicekk
+- **Medium:** https://medium.com/@cckberk
+- **CV / Resume:** https://docs.google.com/document/d/1POD2VYuteVXSXustTqPz-uPkZ1_TNi9j9VeWFSfBScg/edit?usp=sharing
+
+## Key Skills & Ecosystems
+
+- **DevOps:** CI/CD pipelines, Docker, delivery automation, SRE, observability, Linux
+- **Cybersecurity:** penetration testing, web security, ethical hacking, 5G infrastructure research
+- **Web3 / Blockchain:** Solana, MINA Protocol (ZK), Algorand, EVM, Solidity, smart contracts
+- **Software:** Java, React, C#, ASP.NET MVC, SQL, full-stack web development
+- **Leadership:** hackathon team lead, cybersecurity instructor, technical content creator
+
+## Notable Projects
+
+- **Joins** (https://joins.tr/) — Turkish live quiz platform built as a team project; web-based interactive knowledge games.
+- **zk-File Transfer** — Award-winning private file transfer using zero-knowledge proofs on Solana.
+- **BLAZR** (https://www.linkedin.com/company/playblazr/) — Micro-investment application on Algorand; 2nd place at ALGOHACK Open Innovation Track.
+- **Launchpad Project** — Smart contracts & secure deployment workflows; MINA zk-Ignite Cohort 3 grant recipient.
+- **CENK Project** — Active security research on 5G infrastructure (details confidential).
+
+## Technical Writing (Medium)
+
+- Blockchain Hack (Vaka Analizi) — 2023-05-29
+- Zero Knowledge Proof (ZKP) — 2022-10-30
+- Solidity 1–5 series (smart contracts, contract structure, escrow, coin/token) — Mar–Apr 2023
+- Blockchain Tarafından Desteklenen Togg Mobility Ekosistemi — 2023-04-03
+- Blockchain Developer ToolBox — 2023-03-20
+- Para Nedir? — 2022-12-21
+
+## Site Metadata
+
+- **Languages:** Turkish (TR), English (EN), German (DE)
+- **Tech stack:** HTML5, CSS3, Tailwind CSS (CDN), Vanilla JavaScript, Lucide Icons, Google Fonts (Inter, JetBrains Mono)
+- **Hosting:** Static — compatible with GitHub Pages, Netlify, Vercel, Cloudflare Pages
+- **License:** MIT
+- **Last updated:** 2026

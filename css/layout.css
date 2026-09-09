@@ -1,0 +1,13 @@
+:root {
+  --site-navbar-height: 88px;
+}
+
+.site-navbar {
+  box-sizing: border-box;
+  height: var(--site-navbar-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+}
