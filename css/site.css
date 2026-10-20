@@ -12,6 +12,10 @@ body { background: #0B0B0C; color: #F7F7F5; }
 [data-reveal].is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } }
 
+/* Wordmark decode effect */
+.wm-char { display: inline-block; text-align: center; }
+.wm-glitch { color: #C8F03C; text-shadow: 0 0 22px rgba(200, 240, 60, .35); }
+
 /* Thin list rows */
 .row-line { border-top: 1px solid rgba(247,247,245,.14); }
 .row-line:last-child { border-bottom: 1px solid rgba(247,247,245,.14); }
