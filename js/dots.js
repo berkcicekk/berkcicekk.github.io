@@ -54,7 +54,7 @@
         const r = Math.round(INK[0] + (SIGNAL[0] - INK[0]) * inf);
         const g = Math.round(INK[1] + (SIGNAL[1] - INK[1]) * inf);
         const b = Math.round(INK[2] + (SIGNAL[2] - INK[2]) * inf);
-        const alpha = 0.1 + inf * 0.8 + (reduceMotion.matches ? 0 : Math.max(0, idle) * 0.06);
+        const alpha = 0.22 + inf * 0.7 + (reduceMotion.matches ? 0 : Math.max(0, idle) * 0.08);
         const size = 11 + inf * 7;
 
         ctx.font = `${inf > 0.12 ? 500 : 400} ${size}px "Geist Mono", ui-monospace, monospace`;
