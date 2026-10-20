@@ -2,15 +2,14 @@
 
 > Personal portfolio and project showcase for Berk Çiçek — DevOps engineer, platform builder and Web3 developer based in Turkey.
 
-rbclabs is a static, multilingual (Turkish / English / German) single-page personal website that documents Berk Çiçek's professional work, open-source projects, hackathon achievements and technical writing. The site has no backend; all content is rendered as plain HTML with Tailwind CSS for styling and vanilla JavaScript for interactivity and i18n.
+rbclabs is a static, multilingual (Turkish / English / German) personal website that documents Berk Çiçek's professional work, open-source projects, hackathon achievements and technical writing. The site has no backend; all content is rendered as plain HTML with Tailwind CSS for styling and vanilla JavaScript for interactivity, i18n and an interactive dot-field animation on the home page.
 
-## Sections (single page)
+## Pages
 
-- [Home / Hero](https://berkcicekk.github.io/): "Build with intent." — role overview (DevOps Engineer, cybersecurity specialist, Web3 developer).
-- [Work](https://berkcicekk.github.io/#work): Selected work including Joins (Turkish live quiz platform), zk-File Transfer (award-winning zero-knowledge file transfer on Solana, HackSolana #1), BLAZR (Algorand micro-investment app, ALGOHACK 2nd place), Launchpad Project (MINA smart contracts, zk-Ignite Cohort 3 grant) and the CENK Project (confidential 5G security research).
-- [About](https://berkcicekk.github.io/#about): Who Berk is — 10+ hackathons, 6 top rankings, 2 ecosystem grants; Computer Engineering at Bülent Ecevit University.
-- [Experience](https://berkcicekk.github.io/#experience): Cyrops (Cyber Security Specialist, 2025–present), Cuberium / Siber Vatan (Team Lead & Web3 Developer, 2022–2024), Turkcell Technology (Software Developer Intern, 2024), Serim Software (Backend Developer Intern, 2023). Awards: HackSolana #1/20 (SuperteamTR, Nov 2024), SuperteamTR Local Grant (Dec 2024), BLAZR #2 ALGOHACK (Rise In, Istanbul), MINA zk-Ignite Cohort 3 Grant (Mar 2024), Startup Weekend #3 Zonguldak (Mar 2023), Ödeal GPT AI Hackathon Finalist (Nov 2023).
-- [Writing](https://berkcicekk.github.io/#writing): Technical articles published on Medium (@cckberk) covering blockchain security (Blockchain Hack Vaka Analizi), zero-knowledge proofs, Solidity smart contract development (5-part series) and the blockchain developer ecosystem.
+- [Home](https://berkcicekk.github.io/): RBC:LABS wordmark, role overview (DevOps Engineer, cybersecurity specialist, Web3 developer), interactive dot-field animation and an index of the other pages.
+- [Works](https://berkcicekk.github.io/projects.html): Selected work including Joins (Turkish live quiz platform), zk-File Transfer (award-winning zero-knowledge file transfer on Solana, HackSolana #1), BLAZR (Algorand micro-investment app, ALGOHACK 2nd place), Launchpad Project (MINA smart contracts, zk-Ignite Cohort 3 grant) and the CENK Project (confidential 5G security research).
+- [Experience](https://berkcicekk.github.io/experience.html): Cyrops (Cyber Security Specialist, 2025–present), Cuberium / Siber Vatan (Team Lead & Web3 Developer, 2022–2024), Turkcell Technology (Software Developer Intern, 2024), Serim Software (Backend Developer Intern, 2023). Awards: HackSolana #1/20 (SuperteamTR, Nov 2024), SuperteamTR Local Grant (Dec 2024), BLAZR #2 ALGOHACK (Rise In, Istanbul), MINA zk-Ignite Cohort 3 Grant (Mar 2024), Startup Weekend #3 Zonguldak (Mar 2023), Ödeal GPT AI Hackathon Finalist (Nov 2023). Education: Computer Engineering, Bülent Ecevit University (2021–2026).
+- [Writing](https://berkcicekk.github.io/writing.html): Technical articles published on Medium (@cckberk) covering blockchain security (Blockchain Hack Vaka Analizi), zero-knowledge proofs, Solidity smart contract development (5-part series) and the blockchain developer ecosystem.
 
 ## Owner
 
