@@ -1,0 +1,11 @@
+:root{
+  --rbc-karbon:#0B0B0C;
+  --rbc-grafit:#1C1C1F;
+  --rbc-celik:#8A8A8F;
+  --rbc-sis:#E6E6E3;
+  --rbc-beyaz:#F7F7F5;
+  --rbc-sinyal:#C8F03C;
+  --rbc-font:'Geist',Helvetica,sans-serif;
+  --rbc-font-mono:'Geist Mono',monospace;
+}
+/* <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"> */

@@ -1,0 +1,11 @@
+RBC LABS MARKA KİTİ v1.0
+
+01-logo-svg        Figma, web sitesi, baskı. Sonsuz ölçeklenir. Önce bunu kullan.
+02-logo-png-seffaf Word, PowerPoint, Canva gibi SVG desteklemeyen yerler.
+03-zeminli         Sosyal medya gönderisi ve kapak görselleri (X/Twitter 1500x500, LinkedIn 1584x396).
+04-ikon-profil     Instagram, LinkedIn, WhatsApp profil fotoğrafı.
+05-favicon         Web sitesi sekme ikonu ve telefon ana ekran ikonu.
+06-renk-font       Renk kodları (CSS / JSON). Fontlar: Geist ve Geist Mono (fonts.google.com, ücretsiz).
+
+Figma: SVG dosyalarını sürükle-bırak > sağ tık > "Create component".
+Web: <link rel="icon" href="/favicon.svg"> ve <link rel="apple-touch-icon" href="/favicon-180.png">
