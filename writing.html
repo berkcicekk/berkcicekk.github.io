@@ -107,6 +107,16 @@
         <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">Security, Solidity and blockchain — lessons learned, written down.</p>
       </section>
 
+      <!-- Medium portal: dotted M, bursts to full screen on click -->
+      <section class="mt-16 flex flex-col items-center">
+        <a id="medium-portal" href="https://medium.com/@cckberk" aria-label="Open Medium profile" class="group block">
+          <div class="relative h-[260px] w-[260px] sm:h-[340px] sm:w-[340px]">
+            <canvas id="medium-dots" class="absolute inset-0 cursor-pointer"></canvas>
+          </div>
+          <p class="micro mt-6 text-center text-paper/40 transition group-hover:text-paper/80" data-i18n="page.portal">( Medium — @cckberk · click to enter )</p>
+        </a>
+      </section>
+
       <section class="mt-14">
         <a data-reveal href="https://cckberk.medium.com/blockchain-hack-vaka-analizi-277d52c5218" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
           <span class="text-base font-medium text-paper/85 transition group-hover:text-paper sm:text-xl">Blockchain Hack — Vaka Analizi</span>
@@ -157,16 +167,17 @@
     <script>
       window.pageTranslations = {
         en: {
-          page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', all: 'All articles' },
+          page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', all: 'All articles', portal: '( Medium — @cckberk · click to enter )' },
         },
         tr: {
-          page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', all: 'Tüm yazılar' },
+          page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', all: 'Tüm yazılar', portal: '( Medium — @cckberk · girmek için tıkla )' },
         },
         de: {
-          page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', all: 'Alle Artikel' },
+          page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', all: 'Alle Artikel', portal: '( Medium — @cckberk · zum Öffnen klicken )' },
         },
       };
     </script>
     <script src="js/shared.js"></script>
+    <script src="js/medium-dots.js"></script>
   </body>
 </html>
