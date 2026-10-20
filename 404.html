@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 | rbclabs — Page Not Found</title>
+    <meta name="robots" content="noindex, follow" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/rbclabs/assets/images/ikonbeyaz.png" />
+    <style>
+      html, body { min-height: 100%; background: #0a0a0a; }
+    </style>
+  </head>
+  <body class="font-sans text-white antialiased">
+    <main class="flex min-h-screen flex-col items-center justify-center gap-8 p-6 text-center">
+      <a href="/rbclabs/" class="flex items-center gap-2.5" aria-label="rbclabs home">
+        <img src="/rbclabs/assets/images/ikonbeyaz.png" alt="rbclabs logo" class="h-12 w-12 scale-[1.65] object-contain" />
+        <span class="text-xl tracking-tight"><span class="font-bold text-white">rbc</span><span class="font-light text-neutral-400">labs</span></span>
+      </a>
+      <div>
+        <p class="font-mono text-sm uppercase tracking-[.3em] text-neutral-500">Error 404</p>
+        <h1 class="mt-4 text-5xl font-black tracking-[-.06em] sm:text-6xl">Page not found.</h1>
+        <p class="mt-4 max-w-md text-sm font-medium text-neutral-400">The page you are looking for doesn't exist or has been moved. Aradığınız sayfa bulunamadı.</p>
+      </div>
+      <a href="/rbclabs/" class="rounded-full border border-white/10 bg-[#161616] px-6 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-[#0a0a0a]">← Back to home / Ana sayfaya dön</a>
+    </main>
+  </body>
+</html>
