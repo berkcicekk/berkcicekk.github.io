@@ -7,4 +7,4 @@ Disallow: /.gitignore
 Disallow: /.env
 
 # Sitemap location
-Sitemap: https://berkcicekk.github.io/rbclabs/sitemap.xml
+Sitemap: https://berkcicekk.github.io/sitemap.xml

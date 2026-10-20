@@ -4,7 +4,7 @@
 
 Burası klasik bir portfolyodan fazlası: DevOps, siber güvenlik ve Web3 dünyasında yıllardır biriken merakın tek çatı altında toplandığı yer. Hackathon'larda geceler boyu kurulan takımlar, ödül kazanan projeler, üretime çıkan sistemler ve yol boyunca yazılan notlar — hepsi burada yaşıyor.
 
-🌐 **Canlı site:** [berkcicekk.github.io/rbclabs](https://berkcicekk.github.io/rbclabs/)
+🌐 **Canlı site:** [berkcicekk.github.io](https://berkcicekk.github.io/)
 
 ---
 
