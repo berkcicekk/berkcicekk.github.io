@@ -33,9 +33,20 @@
     addLine('');
   };
 
+  // ---- tiny CTF state (all fake, all client-side) ----
+  const ctf = { sawHidden: false, decoded: false, unlocked: false };
+  const FLAG = 'RBC{d0wn_th3_r4bb1t_h0le}';
+
   const FILES = {
-    'ideas.md': ['<span class="o">&gt; if you can read this, you are part of the experiment.</span>'],
+    'ideas.md': [
+      '<span class="o">&gt; if you can read this, you are part of the experiment.</span>',
+      '<span class="c"># p.s. some files hide behind a dot. (ls -a)</span>',
+    ],
     'motd.txt': ['<span class="o">Build with intent.</span>'],
+    '.whisper.txt': [
+      '<span class="o">V2hhdCBpcyB0aGUgbmFtZSBvZiB0aGlzIG1hY2hpbmU/</span>',
+      '<span class="c"># looks scrambled. \'decode &lt;text&gt;\' might help.</span>',
+    ],
   };
 
   const LINKS = {
@@ -53,9 +64,13 @@
       '<span class="p">  help</span><span class="o">            show this list</span>',
       '<span class="p">  whoami</span><span class="o">          who is behind this lab</span>',
       '<span class="p">  hostname</span><span class="o">        where you are</span>',
-      '<span class="p">  ls</span><span class="o">              list ~/labs</span>',
+      '<span class="p">  ls</span><span class="o">              list ~/labs (flags take flags)</span>',
       '<span class="p">  cat &lt;file&gt;</span><span class="o">      read a file (try ideas.md)</span>',
       '<span class="p">  open &lt;name&gt;</span><span class="o">     joins · payper · blazr · github · medium · cv</span>',
+      '<span class="p">  decode &lt;text&gt;</span><span class="o">   base64 / binary decoder</span>',
+      '<span class="p">  unlock &lt;pass&gt;</span><span class="o">   open sealed things</span>',
+      '<span class="p">  hint</span><span class="o">            nudge in the right direction</span>',
+      '<span class="p">  flag</span><span class="o">            show your trophy</span>',
       '<span class="p">  neofetch</span><span class="o">        system info, obviously</span>',
       '<span class="p">  banner</span><span class="o">          reprint the banner</span>',
       '<span class="p">  clear</span><span class="o">           clear the screen</span>',
@@ -63,16 +78,71 @@
     ],
     whoami: () => ['<span class="o">berk — devops engineer · security · web3 · builds with intent</span>'],
     hostname: () => ['<span class="sig">follow-white-rabbit</span>'],
-    ls: () => ['<span class="p">cenk/  payper/  joins/  blazr/</span>  <span class="o">ideas.md  motd.txt</span>'],
+    ls: (arg) => {
+      if (arg && /\.vault/.test(arg)) {
+        return ['<span class="o">flag.txt</span>  <span class="c"># (locked)</span>'];
+      }
+      const base = '<span class="p">cenk/  payper/  joins/  blazr/</span>  <span class="o">ideas.md  motd.txt</span>';
+      if (arg && /(^|\s)-a(\s|$)/.test(` ${arg} `)) {
+        ctf.sawHidden = true;
+        return [base + '  <span class="sig">.whisper.txt  .vault/</span>'];
+      }
+      return [base];
+    },
     cat: (arg) => {
       if (!arg) return ['<span class="o">cat: missing file name</span>'];
-      const key = arg.replace(/^~?\/?(labs\/)?/, '');
+      const key = arg.toLowerCase().replace(/^~?\/?(labs\/)?/, '').replace(/^\.\//, '');
+      if (/^\.vault\/?flag\.txt$/.test(key) || key === 'flag.txt') {
+        if (ctf.unlocked) return [`<span class="sig">${FLAG}</span>`];
+        return ['<span class="o">cat: .vault/flag.txt: permission denied — the vault is sealed.</span>', '<span class="c"># try \'unlock &lt;passphrase&gt;\'</span>'];
+      }
       return FILES[key] || [`<span class="o">cat: ${esc(key)}: no such file</span>`];
     },
+    decode: (arg) => {
+      if (!arg) return ['<span class="o">decode: give me base64 or binary (01010…)</span>'];
+      const clean = arg.replace(/\s+/g, '');
+      try {
+        let text;
+        if (/^[01]+$/.test(clean) && clean.length % 8 === 0) {
+          text = clean.match(/.{8}/g).map((b) => String.fromCharCode(parseInt(b, 2))).join('');
+        } else {
+          text = atob(clean);
+        }
+        if (!/^[\x20-\x7EçğıöşüÇĞİÖŞÜ]+$/.test(text)) throw new Error('binary garbage');
+        const out = [`<span class="o">${esc(text)}</span>`];
+        if (/name of this machine/i.test(text)) { ctf.decoded = true; out.push('<span class="c"># the vault listens: \'unlock &lt;answer&gt;\'</span>'); }
+        return out;
+      } catch (e) {
+        return ['<span class="o">decode: that doesn\'t look like base64 or clean binary.</span>'];
+      }
+    },
+    unlock: (arg) => {
+      if (ctf.unlocked) return ['<span class="o">the vault is already open. cat .vault/flag.txt</span>'];
+      const guess = (arg || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (guess === 'followwhiterabbit') {
+        ctf.unlocked = true;
+        return [
+          '<span class="sig">*click* — the vault opens.</span>',
+          `<span class="o">flag captured: </span><span class="sig">${FLAG}</span>`,
+          '<span class="c"># nothing critical was ever in here. just intent.</span>',
+        ];
+      }
+      return ['<span class="o">unlock: incorrect passphrase.</span>', '<span class="c"># the answer has been staring at you from the title bar.</span>'];
+    },
+    hint: () => {
+      if (ctf.unlocked) return ['<span class="o">you\'re done. show-off command: \'flag\'</span>'];
+      if (ctf.decoded) return ['<span class="o">hint: answer the question — \'unlock &lt;machine name&gt;\'</span>'];
+      if (ctf.sawHidden) return ['<span class="o">hint: whispers are worth reading. then decode them.</span>'];
+      return ['<span class="o">hint: start with \'cat ideas.md\'. dots hide things.</span>'];
+    },
+    flag: () => (ctf.unlocked
+      ? [`<span class="sig">${FLAG}</span>  <span class="c"># captured 🏴</span>`]
+      : ['<span class="o">no flag captured yet.</span> <span class="c"># try \'hint\'</span>']),
     open: (arg) => {
-      if (!arg || !LINKS[arg]) return [`<span class="o">open: unknown target — try: ${Object.keys(LINKS).join(' · ')}</span>`];
-      window.open(LINKS[arg], '_blank', 'noopener');
-      return [`<span class="o">opening <span class="sig">${esc(arg)}</span> in a new tab…</span>`];
+      const key = (arg || '').toLowerCase().trim();
+      if (!key || !LINKS[key]) return [`<span class="o">open: unknown target — try: ${Object.keys(LINKS).join(' · ')}</span>`];
+      window.open(LINKS[key], '_blank', 'noopener');
+      return [`<span class="o">opening <span class="sig">${esc(key)}</span> in a new tab…</span>`];
     },
     neofetch: () => [
       ...BANNER.map((l) => `<span class="sig">${l}</span>`),
@@ -124,7 +194,7 @@
     const [cmd, ...rest] = raw.split(/\s+/);
     if (raw) {
       const fn = COMMANDS[cmd.toLowerCase()];
-      if (fn) { (fn(rest.join(' ').toLowerCase()) || []).forEach(addLine); }
+      if (fn) { (fn(rest.join(' ')) || []).forEach(addLine); }
       else { addLine(`<span class="o">${esc(cmd)}: command not found</span> <span class="c"># try 'help'</span>`); }
     }
     newPrompt();
