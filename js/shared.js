@@ -57,6 +57,32 @@
     });
   }
 
+  // Smooth scrolling (Lenis), matching the reference site's feel
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let lenis = null;
+  if (window.Lenis && !reduceMotion.matches) {
+    lenis = new window.Lenis({ duration: 1.15, wheelMultiplier: 1, smoothWheel: true });
+    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
+  document.querySelectorAll('.to-top').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+  if (lenis) {
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        a.addEventListener('click', (event) => {
+          const target = document.querySelector(id);
+          if (target) { event.preventDefault(); lenis.scrollTo(target, { offset: -24 }); }
+        });
+      }
+    });
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) { entry.target.classList.add('is-in'); observer.unobserve(entry.target); }
