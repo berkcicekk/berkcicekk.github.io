@@ -66,14 +66,50 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon-180.png" />
     <link rel="stylesheet" href="css/site.css" />
+    <style>
+      /* Pinned project showcase */
+      .pj { height: 190vh; }
+      .pj-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+      .pj-stage { position: relative; width: 100%; }
+      .pj-media {
+        width: 100%; aspect-ratio: 16 / 9; max-height: 82vh;
+        overflow: hidden; border-radius: 1.25rem;
+        transform: scale(var(--s, 1));
+        transform-origin: left center;
+        will-change: transform;
+      }
+      .pj-media img {
+        width: 100%; height: 118%; object-fit: cover;
+        transform: translateY(var(--py, 0));
+        will-change: transform;
+      }
+      .pj-info {
+        position: absolute; right: 0; top: 50%; width: 36%;
+        transform: translate(var(--tx, 46px), -50%);
+        opacity: var(--o, 0);
+        will-change: transform, opacity;
+      }
+      @media (max-width: 767.98px) {
+        .pj { height: auto; }
+        .pj-sticky { position: static; height: auto; display: block; overflow: visible; padding: 2.5rem 0; }
+        .pj-media { transform: none; aspect-ratio: 4 / 3; max-height: none; }
+        .pj-media img { height: 100%; transform: none; }
+        .pj-info { position: static; width: 100%; transform: none; opacity: 1; margin-top: 1.25rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .pj { height: auto; }
+        .pj-sticky { position: static; height: auto; padding: 2.5rem 0; }
+        .pj-media { transform: none; }
+        .pj-info { position: static; width: 100%; transform: none; opacity: 1; margin-top: 1.25rem; }
+      }
+    </style>
   </head>
   <body class="font-sans antialiased">
 
     <!-- ===== NAV ===== -->
     <header class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 pt-6 sm:px-10">
       <a href="index.html" class="flex items-center gap-2.5" aria-label="rbclabs home">
-        <img src="assets/images/rbc-ikon-beyaz.png" alt="rbclabs logo" class="h-8 w-8 object-contain" />
-        <span class="micro text-paper">rbc:labs</span>
+        <img src="assets/images/rbc-yatay-beyaz.svg" alt="rbclabs" class="h-7 w-auto object-contain" />
       </a>
       <div class="flex items-center gap-6">
         <nav aria-label="Main navigation" class="micro hidden items-center gap-6 text-paper/60 md:flex">
@@ -105,45 +141,86 @@
           <p data-reveal class="micro text-paper/40">© 2022 — 2026</p>
         </div>
         <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">Experiments, hackathon winners and production builds — each one shipped, not just sketched.</p>
+        <p data-reveal style="--d:160ms" class="micro mt-10 text-paper/30" data-i18n="page.scrollHint">( Scroll )</p>
       </section>
 
-      <!-- Project cards -->
-      <section class="mt-16 grid gap-10 md:grid-cols-2">
-        <a data-reveal href="https://joins.tr/" target="_blank" rel="noreferrer" class="group">
-          <div class="overflow-hidden rounded-2xl"><img src="assets/images/projectpage.jpg" alt="Joins — Turkish live quiz platform" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
-          <div class="micro mt-4 flex items-center justify-between text-paper/70">
-            <span>Joins</span><span data-i18n="work.t1">Web · Product ↗</span>
+      <!-- ===== PROJECT 01 · Joins ===== -->
+      <section class="pj" data-project>
+        <div class="pj-sticky">
+          <div class="pj-stage">
+            <div class="pj-media"><img src="assets/images/projectpage.jpg" alt="Joins — Turkish live quiz platform" /></div>
+            <div class="pj-info">
+              <p class="micro text-paper/40">/01 — Web · Product</p>
+              <h2 class="display mt-3 text-4xl font-semibold text-paper sm:text-5xl">Joins</h2>
+              <p data-i18n="pj.joins" class="mt-5 text-sm leading-relaxed text-paper/60">Turkish live quiz platform — interactive knowledge games, built as a team.</p>
+              <a href="https://joins.tr/" target="_blank" rel="noreferrer" class="micro mt-6 inline-block rounded-full border border-paper/20 px-5 py-2.5 text-paper transition hover:bg-paper hover:text-ink">joins.tr ↗</a>
+            </div>
           </div>
-          <p data-i18n="work.joins" class="mt-2 text-sm leading-relaxed text-paper/50">Turkish live quiz platform — interactive knowledge games, built as a team.</p>
-        </a>
-
-        <div data-reveal style="--d:80ms" class="group">
-          <div class="overflow-hidden rounded-2xl"><img src="assets/images/zk-file-transfer.jpg" alt="zk-File Transfer on Solana" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
-          <div class="micro mt-4 flex items-center justify-between text-paper/70">
-            <span>zk-File Transfer</span><span>Solana · ZK · #1</span>
-          </div>
-          <p data-i18n="work.zk" class="mt-2 text-sm leading-relaxed text-paper/50">Award-winning private file transfer with zero-knowledge proofs. HackSolana #1.</p>
         </div>
+      </section>
 
-        <a data-reveal href="https://www.linkedin.com/company/playblazr/" target="_blank" rel="noreferrer" class="group">
-          <div class="overflow-hidden rounded-2xl"><img src="assets/images/mobile-app.jpg" alt="BLAZR micro-investment app" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
-          <div class="micro mt-4 flex items-center justify-between text-paper/70">
-            <span>BLAZR</span><span>Algorand · Mobile ↗</span>
+      <!-- ===== PROJECT 02 · zk-File Transfer ===== -->
+      <section class="pj" data-project>
+        <div class="pj-sticky">
+          <div class="pj-stage">
+            <div class="pj-media"><img src="assets/images/zk-file-transfer.jpg" alt="zk-File Transfer on Solana" /></div>
+            <div class="pj-info">
+              <p class="micro text-paper/40">/02 — Solana · ZK</p>
+              <h2 class="display mt-3 text-4xl font-semibold text-paper sm:text-5xl">zk-File Transfer</h2>
+              <p data-i18n="pj.zk" class="mt-5 text-sm leading-relaxed text-paper/60">Award-winning private file transfer with zero-knowledge proofs. HackSolana #1.</p>
+              <p class="micro mt-6 text-accent">★ HackSolana #1</p>
+            </div>
           </div>
-          <p data-i18n="work.blazr" class="mt-2 text-sm leading-relaxed text-paper/50">Micro-investment app on Algorand — 2nd place, ALGOHACK Open Innovation Track.</p>
-        </a>
+        </div>
+      </section>
 
-        <div data-reveal style="--d:80ms" class="group">
-          <div class="overflow-hidden rounded-2xl"><img src="assets/images/launchpad-project.jpg" alt="Launchpad Project on MINA" loading="lazy" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" /></div>
-          <div class="micro mt-4 flex items-center justify-between text-paper/70">
-            <span>Launchpad Project</span><span>MINA · ZK · Grant</span>
+      <!-- ===== PROJECT 03 · BLAZR ===== -->
+      <section class="pj" data-project>
+        <div class="pj-sticky">
+          <div class="pj-stage">
+            <div class="pj-media"><img src="assets/images/mobile-app.jpg" alt="BLAZR micro-investment app" /></div>
+            <div class="pj-info">
+              <p class="micro text-paper/40">/03 — Algorand · Mobile</p>
+              <h2 class="display mt-3 text-4xl font-semibold text-paper sm:text-5xl">BLAZR</h2>
+              <p data-i18n="pj.blazr" class="mt-5 text-sm leading-relaxed text-paper/60">Micro-investment app on Algorand — 2nd place, ALGOHACK Open Innovation Track.</p>
+              <a href="https://www.linkedin.com/company/playblazr/" target="_blank" rel="noreferrer" class="micro mt-6 inline-block rounded-full border border-paper/20 px-5 py-2.5 text-paper transition hover:bg-paper hover:text-ink">LinkedIn ↗</a>
+            </div>
           </div>
-          <p data-i18n="work.launchpad" class="mt-2 text-sm leading-relaxed text-paper/50">Smart contracts and secure deployment workflows — zk-Ignite Cohort 3 grant.</p>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT 04 · Launchpad ===== -->
+      <section class="pj" data-project>
+        <div class="pj-sticky">
+          <div class="pj-stage">
+            <div class="pj-media"><img src="assets/images/launchpad-project.jpg" alt="Launchpad Project on MINA" /></div>
+            <div class="pj-info">
+              <p class="micro text-paper/40">/04 — MINA · ZK</p>
+              <h2 class="display mt-3 text-4xl font-semibold text-paper sm:text-5xl">Launchpad Project</h2>
+              <p data-i18n="pj.launchpad" class="mt-5 text-sm leading-relaxed text-paper/60">Smart contracts and secure deployment workflows — zk-Ignite Cohort 3 grant.</p>
+              <p class="micro mt-6 text-accent">zk-Ignite Cohort 3 Grant</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECT 05 · CENK ===== -->
+      <section class="pj" data-project>
+        <div class="pj-sticky">
+          <div class="pj-stage">
+            <div class="pj-media"><img src="assets/images/card-bg-2.jpg" alt="CENK Project — 5G security research" /></div>
+            <div class="pj-info">
+              <p class="micro text-paper/40">/05 — 5G · Security</p>
+              <h2 class="display mt-3 text-4xl font-semibold text-paper sm:text-5xl">CENK Project</h2>
+              <p data-i18n="pj.cenk" class="mt-5 text-sm leading-relaxed text-paper/60">Active security research on 5G infrastructure. Details remain confidential.</p>
+              <p class="micro mt-6 text-paper/40" data-i18n="pj.wip">2026 · In progress</p>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Signal index card -->
-      <section data-reveal class="mt-10 rounded-2xl bg-accent p-6 text-ink sm:p-10">
+      <section data-reveal class="mt-6 rounded-2xl bg-accent p-6 text-ink sm:p-10">
         <div class="flex flex-wrap items-start justify-between gap-4">
           <p class="micro" data-i18n="work.indexTitle">( Work index )</p>
           <p class="micro" data-i18n="work.indexNote">Currently building: CENK — 5G security research, confidential</p>
@@ -173,7 +250,7 @@
         </div>
         <div class="flex flex-col items-end gap-6">
           <img src="assets/images/rbc-yatay-siyah.svg" alt="rbclabs logo" class="h-10 w-auto object-contain" />
-          <a href="#" class="to-top" data-i18n="footer.top" class="rounded-full border border-ink/20 px-5 py-2.5 text-xs font-medium transition hover:border-ink/50">Back to top ↑</a>
+          <a href="#" class="to-top rounded-full border border-ink/20 px-5 py-2.5 text-xs font-medium transition hover:border-ink/50" data-i18n="footer.top">Back to top ↑</a>
         </div>
       </div>
       <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between border-t border-ink/10 px-6 py-6 sm:px-10">
@@ -185,50 +262,45 @@
     <script>
       window.pageTranslations = {
         en: {
-          page: { title: 'Selected', titleAccent: 'works', sub: 'Experiments, hackathon winners and production builds — each one shipped, not just sketched.' },
-          work: {
+          page: { title: 'Selected', titleAccent: 'works', sub: 'Experiments, hackathon winners and production builds — each one shipped, not just sketched.', scrollHint: '( Scroll )' },
+          pj: {
             joins: 'Turkish live quiz platform — interactive knowledge games, built as a team.',
             zk: 'Award-winning private file transfer with zero-knowledge proofs. HackSolana #1.',
             blazr: 'Micro-investment app on Algorand — 2nd place, ALGOHACK Open Innovation Track.',
             launchpad: 'Smart contracts and secure deployment workflows — zk-Ignite Cohort 3 grant.',
-            t1: 'Web · Product ↗',
-            indexTitle: '( Work index )',
-            indexNote: 'Currently building: CENK — 5G security research, confidential',
+            cenk: 'Active security research on 5G infrastructure. Details remain confidential.',
             wip: '2026 · In progress',
-            more: 'Startup Weekend app concept',
           },
+          work: { indexTitle: '( Work index )', indexNote: 'Currently building: CENK — 5G security research, confidential', wip: '2026 · In progress', more: 'Startup Weekend app concept' },
         },
         tr: {
-          page: { title: 'Seçilmiş', titleAccent: 'işler', sub: 'Denemeler, hackathon birincileri ve üretim projeleri — hepsi yayına çıktı, çizimde kalmadı.' },
-          work: {
+          page: { title: 'Seçilmiş', titleAccent: 'işler', sub: 'Denemeler, hackathon birincileri ve üretim projeleri — hepsi yayına çıktı, çizimde kalmadı.', scrollHint: '( Kaydır )' },
+          pj: {
             joins: 'Türkçe canlı bilgi yarışması platformu — ekipçe geliştirilen etkileşimli oyunlar.',
             zk: "Sıfır bilgi ispatlı, ödüllü özel dosya transferi. HackSolana 1.'si.",
             blazr: "Algorand üzerinde mikro yatırım uygulaması — ALGOHACK Open Innovation 2.'si.",
             launchpad: 'Akıllı kontratlar ve güvenli dağıtım akışları — zk-Ignite Cohort 3 hibesi.',
-            t1: 'Web · Ürün ↗',
-            indexTitle: '( İş dizini )',
-            indexNote: 'Şu an geliştiriliyor: CENK — 5G güvenlik araştırması, gizli',
+            cenk: '5G altyapısı üzerine süren güvenlik araştırması. Detaylar gizlilik kapsamında.',
             wip: '2026 · Devam ediyor',
-            more: 'Startup Weekend uygulama konsepti',
           },
+          work: { indexTitle: '( İş dizini )', indexNote: 'Şu an geliştiriliyor: CENK — 5G güvenlik araştırması, gizli', wip: '2026 · Devam ediyor', more: 'Startup Weekend uygulama konsepti' },
         },
         de: {
-          page: { title: 'Ausgewählte', titleAccent: 'Arbeiten', sub: 'Experimente, Hackathon-Sieger und Produktionsprojekte — alles ausgeliefert, nicht nur skizziert.' },
-          work: {
+          page: { title: 'Ausgewählte', titleAccent: 'Arbeiten', sub: 'Experimente, Hackathon-Sieger und Produktionsprojekte — alles ausgeliefert, nicht nur skizziert.', scrollHint: '( Scrollen )' },
+          pj: {
             joins: 'Türkische Live-Quiz-Plattform — interaktive Wissensspiele, im Team entwickelt.',
             zk: 'Preisgekrönte private Dateiübertragung mit Zero-Knowledge-Proofs. HackSolana Platz 1.',
             blazr: 'Mikro-Investment-App auf Algorand — Platz 2 beim ALGOHACK Open Innovation Track.',
             launchpad: 'Smart Contracts und sichere Deployment-Workflows — zk-Ignite Cohort 3 Grant.',
-            t1: 'Web · Produkt ↗',
-            indexTitle: '( Arbeitsindex )',
-            indexNote: 'Aktuell: CENK — 5G-Sicherheitsforschung, vertraulich',
+            cenk: 'Laufende Sicherheitsforschung an 5G-Infrastruktur. Details vertraulich.',
             wip: '2026 · In Arbeit',
-            more: 'Startup-Weekend-App-Konzept',
           },
+          work: { indexTitle: '( Arbeitsindex )', indexNote: 'Aktuell: CENK — 5G-Sicherheitsforschung, vertraulich', wip: '2026 · In Arbeit', more: 'Startup-Weekend-App-Konzept' },
         },
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <script src="js/shared.js"></script>
+    <script src="js/works-scroll.js"></script>
   </body>
 </html>
