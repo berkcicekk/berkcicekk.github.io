@@ -70,7 +70,7 @@
 
       /* 3D business card */
       #bcard-scene { perspective: 1300px; }
-      #bcard { width: min(480px, 88vw); aspect-ratio: 1.68; cursor: pointer; transform-style: preserve-3d; will-change: transform; outline: none; -webkit-tap-highlight-color: transparent; }
+      #bcard { width: min(440px, 88vw); aspect-ratio: 1.68; cursor: pointer; transform-style: preserve-3d; will-change: transform; outline: none; -webkit-tap-highlight-color: transparent; }
       #bcard:focus-visible { outline: 2px solid rgba(200,240,60,.6); outline-offset: 10px; border-radius: 1.25rem; }
       #bcard-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .72s cubic-bezier(.2,.85,.3,1); }
       #bcard.is-flipped #bcard-inner { transform: rotateY(180deg); }
@@ -135,8 +135,45 @@
     <main class="mx-auto w-full max-w-[1440px] px-6 pb-28 sm:px-10">
 
       <section class="pt-12 sm:pt-16">
-        <h1 data-reveal class="display text-5xl font-semibold text-paper sm:text-7xl"><span data-i18n="page.title">Experience</span><span class="text-accent">.</span></h1>
-        <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">From internships to leading teams — a track built across security, DevOps and Web3.</p>
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <h1 data-reveal class="display text-5xl font-semibold text-paper sm:text-7xl"><span data-i18n="page.title">Experience</span><span class="text-accent">.</span></h1>
+            <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">From internships to leading teams — a track built across security, DevOps and Web3.</p>
+          </div>
+          <!-- 3D business card -->
+          <div data-reveal style="--d:180ms" class="flex flex-col items-center lg:items-end">
+            <div id="bcard-scene" class="flex w-full justify-center py-4 lg:justify-end">
+              <div id="bcard" role="button" tabindex="0" aria-label="3D business card — click to flip">
+                <div id="bcard-inner">
+                  <div class="bcard-face bcard-front">
+                    <div class="bcard-top">
+                      <img src="assets/images/rbc-yatay-beyaz.svg" alt="rbclabs" />
+                      <span class="micro text-paper/35">EST. 2021</span>
+                    </div>
+                    <div>
+                      <p class="display bcard-name">Berk Çiçek</p>
+                      <p class="micro bcard-role">DevOps Engineer · Cyber Security · Web3</p>
+                      <div class="bcard-strip"><span class="bcard-dot"></span><span class="bcard-url">berkcicekk.github.io</span></div>
+                    </div>
+                  </div>
+                  <div class="bcard-face bcard-back">
+                    <div class="bcard-top">
+                      <img src="assets/images/rbc-ikon-beyaz.png" alt="" class="bcard-icon" />
+                      <span class="micro text-paper/35" data-i18n="card.say">( Say hi )</span>
+                    </div>
+                    <div class="bcard-links">
+                      <a href="https://github.com/berkcicekk" target="_blank" rel="noreferrer">github.com/berkcicekk ↗</a>
+                      <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer">medium.com/@cckberk ↗</a>
+                      <a href="https://docs.google.com/document/d/1POD2VYuteVXSXustTqPz-uPkZ1_TNi9j9VeWFSfBScg/edit?usp=sharing" target="_blank" rel="noreferrer" data-i18n="card.cv">cv / resume ↗</a>
+                    </div>
+                    <p class="bcard-motto" data-i18n="card.motto">BUILD WITH INTENT.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="micro mt-4 text-paper/30 lg:pr-10" data-i18n="card.hint">( click to flip )</p>
+          </div>
+        </div>
       </section>
 
       <section class="mt-16">
@@ -187,41 +224,6 @@
         </div>
         <p data-i18n="awards.edu" class="mt-8 text-sm text-ink/60">Computer Engineering — Bülent Ecevit University (2021 — 2026)</p>
       </section>
-
-      <!-- 3D business card -->
-      <section data-reveal class="mt-24 sm:mt-32">
-        <p class="micro text-center text-paper/40" data-i18n="card.title">( The card )</p>
-        <div id="bcard-scene" class="mt-12 flex justify-center pb-6">
-          <div id="bcard" role="button" tabindex="0" aria-label="3D business card — click to flip">
-            <div id="bcard-inner">
-              <div class="bcard-face bcard-front">
-                <div class="bcard-top">
-                  <img src="assets/images/rbc-yatay-beyaz.svg" alt="rbclabs" />
-                  <span class="micro text-paper/35">EST. 2021</span>
-                </div>
-                <div>
-                  <p class="display bcard-name">Berk Çiçek</p>
-                  <p class="micro bcard-role">DevOps Engineer · Cyber Security · Web3</p>
-                  <div class="bcard-strip"><span class="bcard-dot"></span><span class="bcard-url">berkcicekk.github.io</span></div>
-                </div>
-              </div>
-              <div class="bcard-face bcard-back">
-                <div class="bcard-top">
-                  <img src="assets/images/rbc-ikon-beyaz.png" alt="" class="bcard-icon" />
-                  <span class="micro text-paper/35" data-i18n="card.say">( Say hi )</span>
-                </div>
-                <div class="bcard-links">
-                  <a href="https://github.com/berkcicekk" target="_blank" rel="noreferrer">github.com/berkcicekk ↗</a>
-                  <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer">medium.com/@cckberk ↗</a>
-                  <a href="https://docs.google.com/document/d/1POD2VYuteVXSXustTqPz-uPkZ1_TNi9j9VeWFSfBScg/edit?usp=sharing" target="_blank" rel="noreferrer" data-i18n="card.cv">cv / resume ↗</a>
-                </div>
-                <p class="bcard-motto" data-i18n="card.motto">BUILD WITH INTENT.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="micro mt-6 text-center text-paper/30" data-i18n="card.hint">( click to flip )</p>
-      </section>
     </main>
 
     <!-- Cursor-following company card -->
@@ -260,19 +262,19 @@
           page: { title: 'Experience', sub: 'From internships to leading teams — a track built across security, DevOps and Web3.' },
           exp: { now: 'Present', now2: 'Present', r0: 'Erasmus for Young Entrepreneurs Programme', r1: 'Cyber Security Specialist', r2: 'Team Lead & Web3 Developer', r3: 'Software Developer Intern', r4: 'Backend Developer Intern' },
           awards: { title: '( Awards & education )', finalist: 'Finalist', edu: 'Computer Engineering — Bülent Ecevit University (2021 — 2026)' },
-          card: { title: '( The card )', say: '( Say hi )', cv: 'cv / resume ↗', motto: 'BUILD WITH INTENT.', hint: '( click to flip )' },
+          card: { say: '( Say hi )', cv: 'cv / resume ↗', motto: 'BUILD WITH INTENT.', hint: '( click to flip )' },
         },
         tr: {
           page: { title: 'Deneyim', sub: 'Stajlardan ekip liderliğine — güvenlik, DevOps ve Web3 ekseninde örülmüş bir yol.' },
           exp: { now: 'Devam', now2: 'Devam', r0: 'Erasmus for Young Entrepreneurs Programı', r1: 'Siber Güvenlik Uzmanı', r2: 'Takım Lideri & Web3 Geliştirici', r3: 'Yazılım Geliştirici Stajyeri', r4: 'Backend Geliştirici Stajyeri' },
           awards: { title: '( Ödüller & eğitim )', finalist: 'Finalist', edu: 'Bilgisayar Mühendisliği — Bülent Ecevit Üniversitesi (2021 — 2026)' },
-          card: { title: '( Kartvizit )', say: '( Selam ver )', cv: 'cv / özgeçmiş ↗', motto: 'BUILD WITH INTENT.', hint: '( çevirmek için tıkla )' },
+          card: { say: '( Selam ver )', cv: 'cv / özgeçmiş ↗', motto: 'BUILD WITH INTENT.', hint: '( çevirmek için tıkla )' },
         },
         de: {
           page: { title: 'Erfahrung', sub: 'Von Praktika bis zur Teamleitung — ein Weg durch Sicherheit, DevOps und Web3.' },
           exp: { now: 'Heute', now2: 'Heute', r0: 'Erasmus for Young Entrepreneurs Programm', r1: 'Cyber Security Specialist', r2: 'Team Lead & Web3-Entwickler', r3: 'Softwareentwickler-Praktikant', r4: 'Backend-Praktikant' },
           awards: { title: '( Auszeichnungen & Ausbildung )', finalist: 'Finalist', edu: 'Informatik — Bülent-Ecevit-Universität (2021 — 2026)' },
-          card: { title: '( Visitenkarte )', say: '( Sag hallo )', cv: 'cv / lebenslauf ↗', motto: 'BUILD WITH INTENT.', hint: '( zum Wenden klicken )' },
+          card: { say: '( Sag hallo )', cv: 'cv / lebenslauf ↗', motto: 'BUILD WITH INTENT.', hint: '( zum Wenden klicken )' },
         },
       };
     </script>
