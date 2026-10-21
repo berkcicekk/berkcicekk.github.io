@@ -92,20 +92,13 @@
   };
 
   if (!onLabs) {
-    // Labs nav link: same portal, from the click point
+    // Labs nav link: portal opens from the click point
     document.querySelectorAll('a[href$="labs.html"]').forEach((a) => {
       a.addEventListener('click', (event) => {
         if (reduceMotion.matches) return; // plain navigation
         event.preventDefault();
         jumpToLabs(event.clientX, event.clientY);
       });
-    });
-
-    // The rabbit hole: clicking empty space anywhere opens the portal
-    document.addEventListener('click', (event) => {
-      if (reduceMotion.matches) return;
-      if (event.target.closest('a, button, input, textarea, select, label, [data-lang]')) return;
-      jumpToLabs(event.clientX, event.clientY);
     });
   }
 
