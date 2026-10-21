@@ -61,6 +61,13 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon-180.png" />
     <link rel="stylesheet" href="css/site.css" />
+    <style>
+      /* Cursor-following company card */
+      #exp-card { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; min-width: 190px; max-width: 280px; border-radius: 1rem; border: 1px solid rgba(247,247,245,.14); background: #1C1C1F; padding: 1.1rem 1.4rem; opacity: 0; transition: opacity .18s ease; will-change: transform, opacity; }
+      #exp-card.is-on { opacity: 1; }
+      #exp-card img { display: none; height: 46px; width: auto; max-width: 220px; object-fit: contain; margin-bottom: .6rem; }
+      @media (hover: none), (pointer: coarse) { #exp-card { display: none; } }
+    </style>
   </head>
   <body class="font-sans antialiased">
 
@@ -102,31 +109,31 @@
         <ol>
           <li data-reveal class="row-line grid gap-2 py-7 md:grid-cols-12 md:items-baseline">
             <span class="micro text-paper/40 md:col-span-1">(01)</span>
-            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://www.kultur-art.com/" target="_blank" rel="noreferrer" class="transition hover:text-accent">Kultur Art ↗</a></h2>
+            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://www.kultur-art.com/" target="_blank" rel="noreferrer" class="exp-link transition hover:text-accent" data-preview="kultur-art" data-label="Kultur Art" data-domain="kultur-art.com">Kultur Art ↗</a></h2>
             <p data-i18n="exp.r0" class="text-sm text-paper/60 md:col-span-4">Erasmus for Young Entrepreneurs Programme</p>
             <p class="micro text-paper/40 md:col-span-2 md:text-right">2026 — <span data-i18n="exp.now">Present</span></p>
           </li>
           <li data-reveal class="row-line grid gap-2 py-7 md:grid-cols-12 md:items-baseline">
             <span class="micro text-paper/40 md:col-span-1">(02)</span>
-            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5">Cyrops</h2>
+            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://cyrops.com/" target="_blank" rel="noreferrer" class="exp-link transition hover:text-accent" data-preview="cyrops" data-label="Cyrops" data-domain="cyrops.com">Cyrops ↗</a></h2>
             <p data-i18n="exp.r1" class="text-sm text-paper/60 md:col-span-4">Cyber Security Specialist</p>
             <p class="micro text-paper/40 md:col-span-2 md:text-right">2025 — <span data-i18n="exp.now2">Present</span></p>
           </li>
           <li data-reveal class="row-line grid gap-2 py-7 md:grid-cols-12 md:items-baseline">
             <span class="micro text-paper/40 md:col-span-1">(03)</span>
-            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5">Cuberium / Siber Vatan</h2>
+            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://sibervatan.org/" target="_blank" rel="noreferrer" class="exp-link transition hover:text-accent" data-preview="sibervatan" data-label="Cuberium / Siber Vatan" data-domain="sibervatan.org">Cuberium / Siber Vatan ↗</a></h2>
             <p data-i18n="exp.r2" class="text-sm text-paper/60 md:col-span-4">Team Lead &amp; Web3 Developer</p>
             <p class="micro text-paper/40 md:col-span-2 md:text-right">2022 — 2024</p>
           </li>
           <li data-reveal class="row-line grid gap-2 py-7 md:grid-cols-12 md:items-baseline">
             <span class="micro text-paper/40 md:col-span-1">(04)</span>
-            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5">Turkcell Technology</h2>
+            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://www.turkcell.com.tr/" target="_blank" rel="noreferrer" class="exp-link transition hover:text-accent" data-preview="turkcell" data-label="Turkcell Technology" data-domain="turkcell.com.tr">Turkcell Technology ↗</a></h2>
             <p data-i18n="exp.r3" class="text-sm text-paper/60 md:col-span-4">Software Developer Intern</p>
             <p class="micro text-paper/40 md:col-span-2 md:text-right">2024</p>
           </li>
           <li data-reveal class="row-line grid gap-2 py-7 md:grid-cols-12 md:items-baseline">
             <span class="micro text-paper/40 md:col-span-1">(05)</span>
-            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5">Serim Software</h2>
+            <h2 class="display text-2xl font-semibold text-paper sm:text-4xl md:col-span-5"><a href="https://www.serim.com.tr/" target="_blank" rel="noreferrer" class="exp-link transition hover:text-accent" data-preview="serim" data-label="Serim Software" data-domain="serim.com.tr">Serim Software ↗</a></h2>
             <p data-i18n="exp.r4" class="text-sm text-paper/60 md:col-span-4">Backend Developer Intern</p>
             <p class="micro text-paper/40 md:col-span-2 md:text-right">2023</p>
           </li>
@@ -147,6 +154,13 @@
         <p data-i18n="awards.edu" class="mt-8 text-sm text-ink/60">Computer Engineering — Bülent Ecevit University (2021 — 2026)</p>
       </section>
     </main>
+
+    <!-- Cursor-following company card -->
+    <div id="exp-card" aria-hidden="true">
+      <img alt="" />
+      <p class="exp-card-name display text-xl font-semibold text-paper"></p>
+      <p class="exp-card-domain micro mt-1 text-muted"></p>
+    </div>
 
     <!-- ===== FOOTER ===== -->
     <footer class="rounded-t-[2.5rem] bg-paper pt-12 text-ink">
@@ -192,5 +206,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <script src="js/shared.js"></script>
+    <script src="js/experience-hover.js"></script>
   </body>
 </html>
