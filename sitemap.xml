@@ -36,6 +36,13 @@
   </url>
 
   <url>
+    <loc>https://berkcicekk.github.io/labs.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
     <loc>https://berkcicekk.github.io/writing.html</loc>
     <lastmod>2026-10-20</lastmod>
     <changefreq>weekly</changefreq>

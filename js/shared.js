@@ -2,15 +2,15 @@
 (() => {
   const base = {
     en: {
-      nav: { home: 'Home', work: 'Works', experience: 'Experience', writing: 'Writing' },
+      nav: { home: 'Home', work: 'Works', experience: 'Experience', writing: 'Writing', labs: 'Labs' },
       footer: { say: '( Say hi )', cv: 'CV / Resume ↗', top: 'Back to top ↑', motto: 'Build with intent.' },
     },
     tr: {
-      nav: { home: 'Ana Sayfa', work: 'İşler', experience: 'Deneyim', writing: 'Yazılar' },
+      nav: { home: 'Ana Sayfa', work: 'İşler', experience: 'Deneyim', writing: 'Yazılar', labs: 'Labs' },
       footer: { say: '( Merhaba de )', cv: 'CV / Özgeçmiş ↗', top: 'Başa dön ↑', motto: 'Build with intent.' },
     },
     de: {
-      nav: { home: 'Start', work: 'Arbeiten', experience: 'Erfahrung', writing: 'Artikel' },
+      nav: { home: 'Start', work: 'Arbeiten', experience: 'Erfahrung', writing: 'Artikel', labs: 'Labs' },
       footer: { say: '( Sag Hallo )', cv: 'Lebenslauf ↗', top: 'Nach oben ↑', motto: 'Build with intent.' },
     },
   };
