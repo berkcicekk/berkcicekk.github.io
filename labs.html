@@ -62,17 +62,8 @@
       .cursor { display: inline-block; width: 8px; height: 17px; background: #F7F7F5; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
       @keyframes blink { 50% { opacity: 0; } }
 
-      /* Portal rings */
-      .ring {
-        position: fixed; z-index: 80; pointer-events: none;
-        border: 2px solid #C8F03C; border-radius: 999px;
-        box-shadow: 0 0 40px rgba(200,240,60,.55), inset 0 0 30px rgba(200,240,60,.3);
-        transform: translate(-50%, -50%);
-      }
-      .flash {
-        position: fixed; inset: 0; z-index: 79; pointer-events: none;
-        background: radial-gradient(circle at var(--fx) var(--fy), rgba(200,240,60,.35), rgba(48,10,36,0) 42%);
-      }
+      /* Entry cover: hides the page until the dot reveal plays */
+      #reveal-cover { position: fixed; inset: 0; z-index: 94; background: #0B0B0C; pointer-events: none; }
       @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
     </style>
   </head>
@@ -121,12 +112,13 @@
       </div>
     </main>
 
-    <div id="portal-layer" aria-hidden="true"></div>
+    <div id="reveal-cover" aria-hidden="true"></div>
 
     <script>
       window.pageTranslations = { en: {}, tr: {}, de: {} };
     </script>
     <script src="js/shared.js"></script>
+    <script src="js/labs-transition.js"></script>
     <script src="js/labs-terminal.js"></script>
   </body>
 </html>
