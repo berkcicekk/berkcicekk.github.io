@@ -67,7 +67,7 @@
     <link rel="stylesheet" href="css/site.css" />
     <style>
       /* Pinned project showcase */
-      .pj { height: 190vh; }
+      .pj { height: 155vh; }
       .pj-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
       .pj-stage { position: relative; width: 100%; }
       .pj-media {
@@ -140,11 +140,30 @@
           <p data-reveal class="micro text-paper/40">© 2022 — 2026</p>
         </div>
         <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">Experiments, hackathon winners and production builds — each one shipped, not just sketched.</p>
-        <p data-reveal style="--d:160ms" class="micro mt-10 text-paper/30" data-i18n="page.scrollHint">( Scroll )</p>
+      </section>
+
+      <!-- ===== PROJECT INDEX ===== -->
+      <section class="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <a data-reveal href="#pj-joins" class="group rounded-xl bg-graphite p-5 transition duration-300 hover:-translate-y-1">
+          <p class="micro text-paper/40">/01 — Web · Product</p>
+          <p class="display mt-2 text-xl font-semibold text-paper transition group-hover:text-accent sm:text-2xl">Joins</p>
+        </a>
+        <a data-reveal style="--d:70ms" href="#pj-blazr" class="group rounded-xl bg-graphite p-5 transition duration-300 hover:-translate-y-1">
+          <p class="micro text-paper/40">/02 — Algorand · Mobile</p>
+          <p class="display mt-2 text-xl font-semibold text-paper transition group-hover:text-accent sm:text-2xl">BLAZR</p>
+        </a>
+        <a data-reveal style="--d:140ms" href="#pj-payper" class="group rounded-xl bg-graphite p-5 transition duration-300 hover:-translate-y-1">
+          <p class="micro text-paper/40">/03 — Web · Product</p>
+          <p class="display mt-2 text-xl font-semibold text-paper transition group-hover:text-accent sm:text-2xl">Payper</p>
+        </a>
+        <a data-reveal style="--d:210ms" href="#pj-cenk" class="group rounded-xl bg-graphite p-5 transition duration-300 hover:-translate-y-1">
+          <p class="micro text-paper/40">/04 — 5G · Security</p>
+          <p class="display mt-2 text-xl font-semibold text-paper transition group-hover:text-accent sm:text-2xl">CENK</p>
+        </a>
       </section>
 
       <!-- ===== PROJECT 01 · Joins ===== -->
-      <section class="pj" data-project>
+      <section id="pj-joins" class="pj" data-project>
         <div class="pj-sticky">
           <div class="pj-stage">
             <div class="pj-media"><img src="assets/images/projectpage.jpg" alt="Joins — Turkish live quiz platform" /></div>
@@ -159,7 +178,7 @@
       </section>
 
       <!-- ===== PROJECT 02 · BLAZR ===== -->
-      <section class="pj" data-project>
+      <section id="pj-blazr" class="pj" data-project>
         <div class="pj-sticky">
           <div class="pj-stage">
             <div class="pj-media"><img src="assets/images/mobile-app.jpg" alt="BLAZR micro-investment app" /></div>
@@ -174,7 +193,7 @@
       </section>
 
       <!-- ===== PROJECT 03 · Payper ===== -->
-      <section class="pj" data-project>
+      <section id="pj-payper" class="pj" data-project>
         <div class="pj-sticky">
           <div class="pj-stage">
             <div class="pj-media"><img src="assets/images/card-bg-1.jpg" alt="Payper" /></div>
@@ -189,7 +208,7 @@
       </section>
 
       <!-- ===== PROJECT 04 · CENK ===== -->
-      <section class="pj" data-project>
+      <section id="pj-cenk" class="pj" data-project>
         <div class="pj-sticky">
           <div class="pj-stage">
             <div class="pj-media"><img src="assets/images/card-bg-2.jpg" alt="CENK Project — 5G security research" /></div>
