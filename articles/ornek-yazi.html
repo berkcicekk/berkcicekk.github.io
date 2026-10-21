@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      ŞABLON — yeni yazı eklemek için:
+      1) Bu dosyayı kopyala: articles/yazi-adi.html
+      2) <title>, description, h1, tarih ve kategori chip'ini değiştir
+      3) .prose-rbc içine yazının gövdesini yaz (h2 / p / blockquote / pre / ul serbest)
+      4) Gerçek içerik girince alttaki "robots noindex" satırını SİL
+      5) writing.html'de ilgili kitabın .bm-list'ine satır ekle:
+         <a href="articles/yazi-adi.html" class="bm-row"><span>Başlık</span><span class="micro shrink-0 text-ink/45">2026</span></a>
+    -->
+    <meta name="robots" content="noindex" />
+
+    <title>Örnek Yazı — Şablon | rbclabs library</title>
+    <meta name="description" content="rbclabs kütüphanesi için örnek yazı sayfası şablonu." />
+    <meta name="author" content="Berk Çiçek" />
+
+    <link rel="stylesheet" href="../css/tailwind.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../favicon-180.png" />
+    <link rel="stylesheet" href="../css/site.css" />
+    <style>
+      /* ---- reading page ---- */
+      .article-sheet {
+        background: linear-gradient(160deg, #ffffff, #F7F7F5 45%, #ECECE8);
+        border-radius: 1.4rem;
+        box-shadow: 0 40px 90px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9);
+      }
+      .prose-rbc { color: rgba(11,11,12,.82); font-size: 1.02rem; line-height: 1.85; }
+      .prose-rbc p { margin: 1.1rem 0; }
+      .prose-rbc > p:first-of-type::first-letter {
+        font-family: 'Instrument Serif', serif; font-style: italic;
+        float: left; font-size: 3.6em; line-height: .85; padding: .04em .14em 0 0; color: #0B0B0C;
+      }
+      .prose-rbc h2 { font-weight: 600; font-size: 1.45rem; letter-spacing: -.01em; margin: 2.6rem 0 .9rem; color: #0B0B0C; }
+      .prose-rbc h3 { font-weight: 600; font-size: 1.15rem; margin: 2rem 0 .7rem; color: #0B0B0C; }
+      .prose-rbc a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(11,11,12,.3); transition: text-decoration-color .2s ease; }
+      .prose-rbc a:hover { text-decoration-color: #0B0B0C; }
+      .prose-rbc blockquote {
+        font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.4rem; line-height: 1.5;
+        border-left: 2px solid #C8F03C; padding-left: 1.3rem; margin: 2.2rem 0; color: rgba(11,11,12,.72);
+      }
+      .prose-rbc ul, .prose-rbc ol { margin: 1.1rem 0; padding-left: 1.4rem; }
+      .prose-rbc ul { list-style: disc; }
+      .prose-rbc ol { list-style: decimal; }
+      .prose-rbc li { margin: .4rem 0; }
+      .prose-rbc li::marker { color: rgba(11,11,12,.45); }
+      .prose-rbc pre {
+        background: #0B0B0C; color: #E6E6E3; font-family: 'Geist Mono', ui-monospace, monospace;
+        font-size: .85rem; line-height: 1.7; border-radius: .9rem; padding: 1.1rem 1.3rem;
+        overflow-x: auto; margin: 1.8rem 0;
+      }
+      .prose-rbc pre .sig { color: #C8F03C; }
+      .prose-rbc code { font-family: 'Geist Mono', ui-monospace, monospace; font-size: .9em; }
+      .prose-rbc p code, .prose-rbc li code { background: rgba(11,11,12,.07); border-radius: .3em; padding: .12em .38em; }
+      .prose-rbc hr { border: 0; border-top: 1px solid rgba(11,11,12,.12); margin: 2.4rem auto; width: 38%; }
+      .prose-rbc img { border-radius: .9rem; margin: 1.8rem 0; }
+      .article-chip { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid rgba(11,11,12,.18); border-radius: 999px; padding: .4rem .9rem; }
+      .article-chip .dot { height: 6px; width: 6px; border-radius: 999px; background: #C8F03C; }
+    </style>
+  </head>
+  <body class="font-sans antialiased">
+
+    <!-- ===== NAV ===== -->
+    <header class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 pt-6 sm:px-10">
+      <a href="../index.html" class="flex items-center gap-2.5" aria-label="rbclabs home">
+        <img src="../assets/images/rbc-yatay-beyaz.svg" alt="rbclabs" class="h-7 w-auto object-contain" />
+      </a>
+      <div class="flex items-center gap-6">
+        <nav aria-label="Main navigation" class="micro hidden items-center gap-6 text-paper/60 md:flex">
+          <a href="../index.html" data-i18n="nav.home" class="transition-colors hover:text-paper">Home</a>
+          <a href="../projects.html" data-i18n="nav.work" class="transition-colors hover:text-paper">Works</a>
+          <a href="../experience.html" data-i18n="nav.experience" class="transition-colors hover:text-paper">Experience</a>
+          <a href="../writing.html" data-i18n="nav.writing" class="text-paper">Writing</a>
+          <a href="../labs.html" data-i18n="nav.labs" class="transition-colors hover:text-paper">Labs</a>
+        </nav>
+        <div class="micro flex items-center gap-2 text-paper/50">
+          <button type="button" data-lang="tr" class="transition-colors hover:text-paper">TR</button><span>/</span><button type="button" data-lang="en" class="text-paper transition-colors">EN</button><span>/</span><button type="button" data-lang="de" class="transition-colors hover:text-paper">DE</button>
+        </div>
+        <button id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" class="grid h-9 w-9 place-items-center rounded-full border border-paper/15 md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </header>
+    <nav id="mobile-menu" aria-label="Mobile navigation" class="micro mx-auto hidden w-full max-w-[1440px] flex-col gap-1 px-6 pt-4 text-paper/80 md:hidden">
+      <a href="../index.html" data-i18n="nav.home" class="py-2">Home</a>
+      <a href="../projects.html" data-i18n="nav.work" class="py-2">Works</a>
+      <a href="../experience.html" data-i18n="nav.experience" class="py-2">Experience</a>
+      <a href="../writing.html" data-i18n="nav.writing" class="py-2 text-paper">Writing</a>
+      <a href="../labs.html" data-i18n="nav.labs" class="py-2">Labs</a>
+    </nav>
+
+    <main class="mx-auto w-full max-w-[1440px] px-4 pb-28 sm:px-10">
+
+      <!-- Breadcrumb -->
+      <p data-reveal class="micro pt-10 text-center text-paper/40">
+        <a href="../writing.html" class="transition hover:text-paper">← ( rbc library )</a>
+        <span class="mx-2">/</span>
+        <span class="text-accent">Blockchain</span>
+      </p>
+
+      <!-- The sheet -->
+      <article data-reveal style="--d:120ms" class="article-sheet mx-auto mt-8 w-full max-w-[860px] px-6 py-12 text-ink sm:px-16 sm:py-16">
+
+        <!-- Header -->
+        <header class="border-b border-ink/10 pb-8">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <span class="article-chip micro text-ink/60"><span class="dot"></span>04 — Blockchain</span>
+            <span class="micro text-ink/45">2026-01-01 · 6 dk</span>
+          </div>
+          <h1 class="display mt-7 text-3xl font-semibold leading-tight text-ink sm:text-5xl">Örnek Yazı — Bu Bir Şablondur</h1>
+          <p class="serif-accent mt-4 text-lg text-ink/55">Kütüphanedeki kitapların içinde yazılar böyle görünecek.</p>
+        </header>
+
+        <!-- Body -->
+        <div class="prose-rbc mt-10">
+          <p>Bu sayfa, rbclabs kütüphanesindeki yazıların okuma şablonudur. İlk paragrafın ilk harfi kitap estetiğine uygun şekilde büyük başlar; gövde metni Geist ile dizilir, satır aralığı uzun okumalar için geniş tutulmuştur.</p>
+
+          <p>Gerçek yazıyı eklerken bu bölümdeki her şeyi silip kendi içeriğini yazman yeterli. Aşağıda kullanabileceğin bütün yapı taşlarının örnekleri var.</p>
+
+          <h2>Ara başlık böyle görünür</h2>
+          <p>Paragraflar arasında <code>satır içi kod</code> kullanabilirsin. Bağlantılar <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer">alt çizgiyle</a> gösterilir.</p>
+
+          <blockquote>Alıntılar Instrument Serif italik ile, Sinyal çizgisi eşliğinde dizilir.</blockquote>
+
+          <h3>Liste ve kod bloğu</h3>
+          <ul>
+            <li>Madde işaretli liste</li>
+            <li>İkinci madde</li>
+          </ul>
+
+          <pre><span class="sig"># kod bloğu — Geist Mono, Karbon zemin</span>
+$ echo "build with intent"
+build with intent</pre>
+
+          <hr />
+
+          <p>Yazının sonunda okuyucuyu Medium'daki orijinaline ya da kütüphaneye geri yönlendirebilirsin.</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-8">
+          <a href="../writing.html" class="micro text-ink/50 transition hover:text-ink">← kütüphaneye dön</a>
+          <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer" class="micro text-ink/50 transition hover:text-ink">medium'da oku ↗</a>
+        </footer>
+      </article>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="rounded-t-[2.5rem] bg-paper pt-12 text-ink">
+      <div class="mx-auto flex w-full max-w-[1440px] flex-wrap items-start justify-between gap-10 px-6 pb-12 sm:px-10">
+        <div>
+          <p class="micro text-ink/50" data-i18n="footer.say">( Say hi )</p>
+          <div class="mt-4 flex flex-col gap-1 text-sm font-medium">
+            <a href="https://github.com/berkcicekk" target="_blank" rel="noreferrer" class="w-fit transition hover:opacity-60">GitHub ↗</a>
+            <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer" class="w-fit transition hover:opacity-60">Medium ↗</a>
+            <a href="https://www.linkedin.com/company/playblazr/" target="_blank" rel="noreferrer" class="w-fit transition hover:opacity-60">LinkedIn ↗</a>
+            <a href="https://docs.google.com/document/d/1POD2VYuteVXSXustTqPz-uPkZ1_TNi9j9VeWFSfBScg/edit?usp=sharing" target="_blank" rel="noreferrer" data-i18n="footer.cv" class="w-fit transition hover:opacity-60">CV / Resume ↗</a>
+          </div>
+        </div>
+        <div class="flex flex-col items-end gap-6">
+          <img src="../assets/images/rbc-yatay-siyah.svg" alt="rbclabs logo" class="h-10 w-auto object-contain" />
+          <a href="#" class="to-top" data-i18n="footer.top">Back to top ↑</a>
+        </div>
+      </div>
+      <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between border-t border-ink/10 px-6 py-6 sm:px-10">
+        <p class="micro text-ink/40">rbclabs © 2026 — Berk Çiçek</p>
+        <p class="micro text-ink/40" data-i18n="footer.motto">Build with intent.</p>
+      </div>
+    </footer>
+
+    <script>
+      window.pageTranslations = { en: {}, tr: {}, de: {} };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="../js/shared.js"></script>
+  </body>
+</html>

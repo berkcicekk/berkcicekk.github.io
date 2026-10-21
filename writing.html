@@ -153,20 +153,24 @@
         <p data-reveal style="--d:100ms" data-i18n="page.sub" class="mt-6 max-w-xl text-sm leading-relaxed text-paper/60">Security, Solidity and blockchain — lessons learned, written down.</p>
       </section>
 
-      <!-- Medium portal: dotted M, bursts to full screen on click -->
-      <section class="mt-16 flex flex-col items-center">
-        <a id="medium-portal" href="https://medium.com/@cckberk" aria-label="Open Medium profile" class="group block">
-          <div class="relative h-[260px] w-[260px] sm:h-[340px] sm:w-[340px]">
-            <canvas id="medium-dots" class="absolute inset-0 cursor-pointer"></canvas>
-          </div>
-          <p class="micro mt-6 text-center text-paper/40 transition group-hover:text-paper/80" data-i18n="page.portal">( Medium — @cckberk · click to enter )</p>
-        </a>
-      </section>
+      <!-- Portal + library, side by side -->
+      <section class="mt-10 grid items-center gap-16 border-t border-paper/10 pt-12 sm:mt-14 lg:grid-cols-2 lg:gap-0 lg:pt-6">
 
-      <!-- The library: five books, one per theme -->
-      <section class="mt-20 sm:mt-24">
-        <p data-reveal class="micro text-center text-paper/40" data-i18n="lib.title">( The library )</p>
-        <div data-reveal style="--d:120ms" class="mt-12 overflow-x-auto pb-4">
+        <!-- Medium portal: dotted M, bursts to full screen on click -->
+        <div class="flex w-full min-w-0 flex-col items-center lg:py-12">
+          <p data-reveal class="micro text-paper/40" data-i18n="lib.portalTitle">( The portal )</p>
+          <a id="medium-portal" href="https://medium.com/@cckberk" aria-label="Open Medium profile" class="group mt-8 block">
+            <div class="relative h-[240px] w-[240px] sm:h-[320px] sm:w-[320px]">
+              <canvas id="medium-dots" class="absolute inset-0 cursor-pointer"></canvas>
+            </div>
+            <p class="micro mt-6 text-center text-paper/40 transition group-hover:text-paper/80" data-i18n="page.portal">( Medium — @cckberk · click to enter )</p>
+          </a>
+        </div>
+
+        <!-- The library: five books, one per theme -->
+        <div class="flex w-full min-w-0 flex-col items-center lg:border-l lg:border-paper/10 lg:py-12">
+          <p data-reveal class="micro text-paper/40" data-i18n="lib.title">( The library )</p>
+          <div data-reveal style="--d:120ms" class="mt-10 w-full overflow-x-auto pb-4">
           <div class="mx-auto w-fit px-4">
             <div id="shelf" class="flex items-end gap-3 sm:gap-5">
               <button type="button" class="book book-devops" data-book="devops" data-num="01" data-title="DevOps" style="--h:240px;--w:68px">
@@ -197,8 +201,9 @@
             </div>
             <div class="shelf-plank"></div>
           </div>
+          </div>
+          <p class="micro mt-6 text-paper/30" data-i18n="lib.hint">( pick a book )</p>
         </div>
-        <p class="micro mt-8 text-center text-paper/30" data-i18n="lib.hint">( pick a book )</p>
       </section>
     </main>
 
@@ -258,15 +263,15 @@
       window.pageTranslations = {
         en: {
           page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', portal: '( Medium — @cckberk · click to enter )' },
-          lib: { title: '( The library )', hint: '( pick a book )', empty: 'This shelf is still being written…', all: 'all articles — medium ↗' },
+          lib: { title: '( The library )', portalTitle: '( The portal )', hint: '( pick a book )', empty: 'This shelf is still being written…', all: 'all articles — medium ↗' },
         },
         tr: {
           page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', portal: '( Medium — @cckberk · girmek için tıkla )' },
-          lib: { title: '( Kütüphane )', hint: '( bir kitap seç )', empty: 'Bu raf henüz yazılıyor…', all: 'tüm yazılar — medium ↗' },
+          lib: { title: '( Kütüphane )', portalTitle: '( Portal )', hint: '( bir kitap seç )', empty: 'Bu raf henüz yazılıyor…', all: 'tüm yazılar — medium ↗' },
         },
         de: {
           page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', portal: '( Medium — @cckberk · zum Öffnen klicken )' },
-          lib: { title: '( Bibliothek )', hint: '( wähl ein Buch )', empty: 'Dieses Regal wird noch geschrieben…', all: 'alle Artikel — medium ↗' },
+          lib: { title: '( Bibliothek )', portalTitle: '( Das Portal )', hint: '( wähl ein Buch )', empty: 'Dieses Regal wird noch geschrieben…', all: 'alle Artikel — medium ↗' },
         },
       };
     </script>

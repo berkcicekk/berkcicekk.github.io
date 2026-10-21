@@ -1,6 +1,6 @@
 /** Build: npx tailwindcss@3.4.17 -i css/tailwind.src.css -o css/tailwind.css --minify */
 module.exports = {
-  content: ['./*.html', './js/*.js'],
+  content: ['./*.html', './articles/*.html', './js/*.js'],
   theme: {
     extend: {
       fontFamily: {
