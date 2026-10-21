@@ -52,6 +52,65 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon-180.png" />
     <link rel="stylesheet" href="css/site.css" />
+    <style>
+      /* ---- library shelf ---- */
+      #shelf .book {
+        position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+        gap: .5rem; width: var(--w, 66px); height: var(--h, 240px); padding: 16px 0 12px; flex: none;
+        border-radius: 5px 9px 9px 5px; cursor: pointer; border: 1px solid rgba(247,247,245,.08);
+        transform: rotate(var(--lean, 0deg)); transform-origin: bottom center;
+        transition: transform .45s cubic-bezier(.2,.85,.3,1), box-shadow .45s ease;
+        box-shadow: inset 7px 0 12px -7px rgba(0,0,0,.7), inset -3px 0 7px -4px rgba(247,247,245,.12), 0 16px 28px rgba(0,0,0,.45);
+      }
+      #shelf .book:hover, #shelf .book:focus-visible {
+        transform: translateY(-18px) rotate(0deg); outline: none;
+        box-shadow: inset 7px 0 12px -7px rgba(0,0,0,.7), inset -3px 0 7px -4px rgba(247,247,245,.12),
+          0 30px 46px rgba(0,0,0,.6), 0 0 0 1px rgba(200,240,60,.3), 0 24px 60px rgba(200,240,60,.12);
+      }
+      .book-band { display: block; width: 68%; height: 3px; border-radius: 2px; }
+      .book-title { writing-mode: vertical-rl; flex: 1; display: flex; align-items: center; font-weight: 600; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
+      .book-num { font-family: 'Geist Mono', monospace; font-size: 9px; opacity: .55; letter-spacing: .1em; }
+      .book-devops { background: linear-gradient(90deg, #26262b, #1C1C1F 55%, #17171a); color: #E6E6E3; }
+      .book-devops .book-band { background: #8A8A8F; }
+      .book-cyber { background: linear-gradient(90deg, #1b1b1e, #101012 60%, #0d0d0f); color: #E6E6E3; }
+      .book-cyber .book-band { background: #C8F03C; }
+      .book-sib { background: linear-gradient(90deg, #46464e, #33333a 60%, #2b2b31); color: #F7F7F5; }
+      .book-sib .book-band { background: #E6E6E3; }
+      .book-chain { background: linear-gradient(90deg, #d7f968, #C8F03C 55%, #accf31); color: #0B0B0C; border-color: rgba(11,11,12,.2); }
+      .book-chain .book-band { background: #0B0B0C; }
+      .book-islamic { background: linear-gradient(90deg, #ffffff, #F7F7F5 50%, #E6E6E3); color: #0B0B0C; border-color: rgba(11,11,12,.12); }
+      .book-islamic .book-band { background: #C8F03C; }
+      .book-islamic .book-title { font-family: 'Instrument Serif', serif; font-style: italic; text-transform: none; font-size: 17px; letter-spacing: .08em; }
+      .shelf-plank { height: 10px; border-radius: 999px; background: linear-gradient(180deg, #2A2A2F, #1A1A1D); box-shadow: 0 14px 30px rgba(0,0,0,.55), inset 0 1px 0 rgba(247,247,245,.08); }
+
+      /* ---- open book modal ---- */
+      #book-modal { position: fixed; inset: 0; z-index: 90; display: none; }
+      #book-modal.is-on { display: grid; place-items: center; padding: 1.2rem; }
+      .bm-backdrop { position: absolute; inset: 0; background: rgba(11,11,12,.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; transition: opacity .35s ease; }
+      #book-modal.is-open .bm-backdrop { opacity: 1; }
+      .bm-book {
+        position: relative; width: min(900px, 94vw); max-height: 84vh; display: grid; grid-template-columns: 1fr 1.15fr;
+        border-radius: 1.1rem; overflow: hidden; box-shadow: 0 60px 120px rgba(0,0,0,.65);
+        transform: perspective(1600px) rotateX(10deg) scale(.93); opacity: 0;
+        transition: transform .5s cubic-bezier(.2,.85,.3,1), opacity .4s ease;
+      }
+      #book-modal.is-open .bm-book { transform: none; opacity: 1; }
+      .bm-page { padding: 2.2rem 2.4rem; color: #0B0B0C; }
+      .bm-left { background: linear-gradient(105deg, #ffffff, #F7F7F5 55%, #ECECE8); display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem; box-shadow: inset -26px 0 32px -26px rgba(0,0,0,.35); }
+      .bm-right { background: #F7F7F5; overflow-y: auto; box-shadow: inset 26px 0 32px -26px rgba(0,0,0,.3); }
+      .bm-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .85rem 0; border-bottom: 1px solid rgba(11,11,12,.1); font-size: .9rem; font-weight: 500; transition: opacity .2s ease; }
+      .bm-row:hover { opacity: .55; }
+      .bm-close { position: absolute; right: .9rem; top: .9rem; z-index: 2; display: grid; place-items: center; height: 34px; width: 34px; border-radius: 999px; border: 1px solid rgba(11,11,12,.18); color: rgba(11,11,12,.6); font-size: 13px; transition: all .2s ease; }
+      .bm-close:hover { color: #0B0B0C; border-color: rgba(11,11,12,.5); }
+      @media (max-width: 640px) {
+        .bm-book { grid-template-columns: 1fr; max-height: 88vh; overflow-y: auto; }
+        .bm-left { gap: 1.2rem; box-shadow: inset 0 -20px 24px -20px rgba(0,0,0,.3); }
+        .bm-page { padding: 1.5rem 1.4rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #shelf .book, .bm-book, .bm-backdrop { transition: none; }
+      }
+    </style>
   </head>
   <body class="font-sans antialiased">
 
@@ -104,29 +163,73 @@
         </a>
       </section>
 
-      <section class="mt-14">
-        <a data-reveal href="https://cckberk.medium.com/blockchain-hack-vaka-analizi-277d52c5218" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
-          <span class="text-base font-medium text-paper/85 transition group-hover:text-paper sm:text-xl">Blockchain Hack — Vaka Analizi</span>
-          <span class="micro shrink-0 text-paper/40">2023 · Security ↗</span>
-        </a>
-        <a data-reveal href="https://cckberk.medium.com/zero-knowledge-proof-zkp-4292a8411dcc" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
-          <span class="text-base font-medium text-paper/85 transition group-hover:text-paper sm:text-xl">Zero Knowledge Proof (ZKP)</span>
-          <span class="micro shrink-0 text-paper/40">2022 · ZK ↗</span>
-        </a>
-        <a data-reveal href="https://cckberk.medium.com/solidity-1-ak%C4%B1ll%C4%B1-kontratlar-1ce367a12f4a" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
-          <span class="text-base font-medium text-paper/85 transition group-hover:text-paper sm:text-xl">Solidity Series (1–5)</span>
-          <span class="micro shrink-0 text-paper/40">2023 · Solidity ↗</span>
-        </a>
-        <a data-reveal href="https://cckberk.medium.com/blockchain-developer-toolbox-9afdf16ba1ad" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
-          <span class="text-base font-medium text-paper/85 transition group-hover:text-paper sm:text-xl">Blockchain Developer ToolBox</span>
-          <span class="micro shrink-0 text-paper/40">2023 · Web3 ↗</span>
-        </a>
-        <a data-reveal href="https://cckberk.medium.com/" target="_blank" rel="noreferrer" class="row-line group flex items-baseline justify-between gap-6 py-5">
-          <span data-i18n="page.all" class="text-base font-medium text-accent sm:text-xl">All articles</span>
-          <span class="micro shrink-0 text-paper/40">Medium ↗</span>
-        </a>
+      <!-- The library: five books, one per theme -->
+      <section class="mt-20 sm:mt-24">
+        <p data-reveal class="micro text-center text-paper/40" data-i18n="lib.title">( The library )</p>
+        <div data-reveal style="--d:120ms" class="mt-12 overflow-x-auto pb-4">
+          <div class="mx-auto w-fit px-4">
+            <div id="shelf" class="flex items-end gap-3 sm:gap-5">
+              <button type="button" class="book book-devops" data-book="devops" data-num="01" data-title="DevOps" style="--h:240px;--w:68px">
+                <span class="book-band" aria-hidden="true"></span>
+                <span class="book-title">DevOps</span>
+                <span class="book-num">01</span>
+              </button>
+              <button type="button" class="book book-cyber" data-book="cyber" data-num="02" data-title="Cyber Security" style="--h:268px;--w:74px">
+                <span class="book-band" aria-hidden="true"></span>
+                <span class="book-title">Cyber Security</span>
+                <span class="book-num">02</span>
+              </button>
+              <button type="button" class="book book-sib" data-book="sibernetik" data-num="03" data-title="Sibernetik" style="--h:230px;--w:62px;--lean:5deg">
+                <span class="book-band" aria-hidden="true"></span>
+                <span class="book-title">Sibernetik</span>
+                <span class="book-num">03</span>
+              </button>
+              <button type="button" class="book book-chain" data-book="blockchain" data-num="04" data-title="Blockchain" style="--h:258px;--w:78px">
+                <span class="book-band" aria-hidden="true"></span>
+                <span class="book-title">Blockchain</span>
+                <span class="book-num">04</span>
+              </button>
+              <button type="button" class="book book-islamic" data-book="islamic" data-num="05" data-title="Islamic" style="--h:246px;--w:66px">
+                <span class="book-band" aria-hidden="true"></span>
+                <span class="book-title">Islamic</span>
+                <span class="book-num">05</span>
+              </button>
+            </div>
+            <div class="shelf-plank"></div>
+          </div>
+        </div>
+        <p class="micro mt-8 text-center text-paper/30" data-i18n="lib.hint">( pick a book )</p>
       </section>
     </main>
+
+    <!-- Open book modal -->
+    <div id="book-modal" aria-hidden="true">
+      <div class="bm-backdrop"></div>
+      <div class="bm-book" role="dialog" aria-modal="true" aria-labelledby="bm-title">
+        <button id="bm-close" type="button" class="bm-close" aria-label="Close book">✕</button>
+        <div class="bm-page bm-left">
+          <p class="micro text-ink/45">( rbc library )</p>
+          <div>
+            <p id="bm-num" class="micro text-ink/40"></p>
+            <h2 id="bm-title" class="display mt-2 text-4xl font-semibold text-ink sm:text-5xl"></h2>
+            <p id="bm-count" class="micro mt-4 text-ink/45"></p>
+          </div>
+          <p class="micro text-ink/35" data-i18n="footer.motto">Build with intent.</p>
+        </div>
+        <div class="bm-page bm-right" data-lenis-prevent>
+          <div class="bm-list" data-list="cyber" hidden>
+            <a href="https://cckberk.medium.com/blockchain-hack-vaka-analizi-277d52c5218" target="_blank" rel="noreferrer" class="bm-row"><span>Blockchain Hack — Vaka Analizi</span><span class="micro shrink-0 text-ink/45">2023 ↗</span></a>
+          </div>
+          <div class="bm-list" data-list="blockchain" hidden>
+            <a href="https://cckberk.medium.com/zero-knowledge-proof-zkp-4292a8411dcc" target="_blank" rel="noreferrer" class="bm-row"><span>Zero Knowledge Proof (ZKP)</span><span class="micro shrink-0 text-ink/45">2022 ↗</span></a>
+            <a href="https://cckberk.medium.com/solidity-1-ak%C4%B1ll%C4%B1-kontratlar-1ce367a12f4a" target="_blank" rel="noreferrer" class="bm-row"><span>Solidity Series (1–5)</span><span class="micro shrink-0 text-ink/45">2023 ↗</span></a>
+            <a href="https://cckberk.medium.com/blockchain-developer-toolbox-9afdf16ba1ad" target="_blank" rel="noreferrer" class="bm-row"><span>Blockchain Developer ToolBox</span><span class="micro shrink-0 text-ink/45">2023 ↗</span></a>
+          </div>
+          <p id="bm-empty" class="serif-accent mt-2 text-lg text-ink/55" data-i18n="lib.empty" hidden>This shelf is still being written…</p>
+          <a href="https://medium.com/@cckberk" target="_blank" rel="noreferrer" class="micro mt-8 block w-fit text-ink/50 transition hover:text-ink" data-i18n="lib.all">all articles — medium ↗</a>
+        </div>
+      </div>
+    </div>
 
     <!-- ===== FOOTER ===== -->
     <footer class="rounded-t-[2.5rem] bg-paper pt-12 text-ink">
@@ -154,13 +257,16 @@
     <script>
       window.pageTranslations = {
         en: {
-          page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', all: 'All articles', portal: '( Medium — @cckberk · click to enter )' },
+          page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', portal: '( Medium — @cckberk · click to enter )' },
+          lib: { title: '( The library )', hint: '( pick a book )', empty: 'This shelf is still being written…', all: 'all articles — medium ↗' },
         },
         tr: {
-          page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', all: 'Tüm yazılar', portal: '( Medium — @cckberk · girmek için tıkla )' },
+          page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', portal: '( Medium — @cckberk · girmek için tıkla )' },
+          lib: { title: '( Kütüphane )', hint: '( bir kitap seç )', empty: 'Bu raf henüz yazılıyor…', all: 'tüm yazılar — medium ↗' },
         },
         de: {
-          page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', all: 'Alle Artikel', portal: '( Medium — @cckberk · zum Öffnen klicken )' },
+          page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', portal: '( Medium — @cckberk · zum Öffnen klicken )' },
+          lib: { title: '( Bibliothek )', hint: '( wähl ein Buch )', empty: 'Dieses Regal wird noch geschrieben…', all: 'alle Artikel — medium ↗' },
         },
       };
     </script>
@@ -168,5 +274,6 @@
     <script src="js/shared.js"></script>
     <script src="js/labs-transition.js"></script>
     <script src="js/medium-dots.js"></script>
+    <script src="js/library.js"></script>
   </body>
 </html>
