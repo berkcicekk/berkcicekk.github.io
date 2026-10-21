@@ -1,4 +1,12 @@
 /* rbclabs — shared styles (RBC Labs brand kit) */
+
+/* Cross-page view transitions (progressive enhancement, Chromium 126+) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation-duration: .25s; }
+  ::view-transition-new(root) { animation-duration: .25s; }
+}
+
 html { scroll-behavior: smooth; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
