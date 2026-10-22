@@ -257,7 +257,7 @@
       </section>
 
       <!-- Awards panel -->
-      <section data-reveal class="mt-16 rounded-[2.5rem] bg-paper px-6 py-12 text-ink sm:px-14 sm:py-16">
+      <section id="awards-panel" data-reveal class="mt-16 rounded-[2.5rem] bg-paper px-6 py-12 text-ink sm:px-14 sm:py-16">
         <div class="flex items-start justify-between gap-6">
           <p class="micro text-ink/50" data-i18n="awards.title">( Awards &amp; education )</p>
           <div id="trophy-scene" aria-hidden="true">
@@ -307,6 +307,9 @@
         <p data-i18n="awards.edu" class="mt-8 text-sm text-ink/60">Computer Engineering — Bülent Ecevit University (2021 — 2026)</p>
       </section>
     </main>
+
+    <!-- Celebration confetti (awards panel hover) -->
+    <canvas id="confetti" aria-hidden="true" style="position:fixed;inset:0;z-index:75;pointer-events:none;"></canvas>
 
     <!-- Cursor-following company card -->
     <div id="exp-card" aria-hidden="true">
@@ -421,6 +424,87 @@
           live = false;
           tx = 0; ty = 0;
           scene.classList.remove('is-live'); // bob animation resumes once the tilt eases out
+        });
+      })();
+    </script>
+    <script>
+      // Awards panel: side-cannon confetti while hovering; stops spawning on leave
+      (() => {
+        const panel = document.getElementById('awards-panel');
+        const canvas = document.getElementById('confetti');
+        if (!panel || !canvas) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const ctx = canvas.getContext('2d');
+        const COLORS = ['#C8F03C', '#F9DF7B', '#D9AE3E', '#FFAAC6', '#729FCF', '#8AE234', '#F7F7F5'];
+        let parts = [];
+        let raf = null;
+        let spawner = null;
+
+        const resize = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+
+        const burst = (side) => {
+          const x = side === 'left' ? -12 : canvas.width + 12;
+          const y = canvas.height * (0.3 + Math.random() * 0.45);
+          const dir = side === 'left' ? 1 : -1;
+          for (let i = 0; i < 18; i++) {
+            parts.push({
+              x, y,
+              vx: dir * (5 + Math.random() * 8),
+              vy: -(5 + Math.random() * 8),
+              g: 0.16 + Math.random() * 0.1,
+              w: 5 + Math.random() * 6,
+              h: 8 + Math.random() * 9,
+              rot: Math.random() * Math.PI,
+              vr: (Math.random() - 0.5) * 0.35,
+              color: COLORS[(Math.random() * COLORS.length) | 0],
+              life: 1,
+              decay: 0.0035 + Math.random() * 0.0045,
+            });
+          }
+          if (!raf) raf = requestAnimationFrame(tick);
+        };
+
+        const tick = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          parts = parts.filter((p) => p.life > 0 && p.y < canvas.height + 40);
+          for (const p of parts) {
+            p.vy += p.g;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vx *= 0.99;
+            p.rot += p.vr;
+            p.life -= p.decay;
+            ctx.save();
+            ctx.globalAlpha = Math.max(p.life, 0);
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.scale(1, Math.cos(p.rot * 1.7)); // paper flutter
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+          if (parts.length) {
+            raf = requestAnimationFrame(tick);
+          } else {
+            raf = null;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        };
+
+        panel.addEventListener('pointerenter', () => {
+          if (spawner) return;
+          burst('left');
+          burst('right');
+          spawner = setInterval(() => { burst('left'); burst('right'); }, 420);
+        });
+        panel.addEventListener('pointerleave', () => {
+          clearInterval(spawner);
+          spawner = null; // in-flight pieces keep falling and fade out on their own
         });
       })();
     </script>
