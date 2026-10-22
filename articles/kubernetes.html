@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Kubernetes — Konteyner Orkestrasyonu | rbclabs library</title>
-    <meta name="description" content="Kubernetes'e temelden bakış: control plane, Pod'lar, Deployment ve Service kavramları, örnek YAML'lar ve üretim ortamı için pratik notlar. Berk Çiçek'in rbclabs kütüphanesinden." />
+    <meta name="description" content="Senior bakışıyla Kubernetes: control plane iç mekanikleri, scheduling ve QoS sınıfları, servis ağı gerçekleri, güvenlik sınırları ve üretimde öğrenilen dersler. Berk Çiçek'in rbclabs kütüphanesinden." />
     <meta name="author" content="Berk Çiçek" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://berkcicekk.github.io/articles/kubernetes.html" />
@@ -26,8 +26,8 @@
     {
       "@context": "https://schema.org",
       "@type": "TechArticle",
-      "headline": "Kubernetes — Konteyner Orkestrasyonunun Temelleri",
-      "description": "Kubernetes'e temelden bakış: control plane, Pod'lar, Deployment ve Service kavramları, örnek YAML'lar ve üretim ortamı için pratik notlar.",
+      "headline": "Kubernetes — Uzlaştırma Döngüsünün Anatomisi",
+      "description": "Senior bakışıyla Kubernetes: control plane iç mekanikleri, scheduling ve QoS, servis ağı gerçekleri, güvenlik sınırları ve üretimde öğrenilen dersler.",
       "inLanguage": "tr",
       "datePublished": "2026-10-22",
       "author": { "@type": "Person", "name": "Berk Çiçek", "url": "https://berkcicekk.github.io/" },
@@ -162,91 +162,108 @@
         <header class="border-b border-ink/10 pb-8">
           <div class="flex flex-wrap items-center justify-between gap-4">
             <span class="article-chip micro text-ink/60"><span class="dot"></span>01 — DevOps</span>
-            <span class="micro text-ink/45">2026-10-22 · 9 dk</span>
+            <span class="micro text-ink/45">2026-10-22 · 14 dk</span>
           </div>
           <h1 class="display mt-7 text-3xl font-semibold leading-tight text-ink sm:text-5xl">Kubernetes</h1>
-          <p class="serif-accent mt-4 text-lg text-ink/55">Yüzlerce konteyneri tek tek yönetmek yerine, niyetini söyle — gerisini orkestra şefi halletsin.</p>
+          <p class="serif-accent mt-4 text-lg text-ink/55">Bir konteyner yöneticisi değil; istenen durumu gerçekliğe zorlayan dağıtık bir kontrol sistemi.</p>
           <p class="micro mt-5 text-ink/35">( alttaki kalemlerden birini seç, metni işaretle — işaretlerin bu tarayıcıda saklanır )</p>
         </header>
 
         <!-- Body -->
         <div id="prose" class="prose-rbc mt-10">
-          <p>Docker ile ilk konteynerini ayağa kaldırdığın an büyülüdür: uygulama, bağımlılıklarıyla birlikte tek bir pakette, her yerde aynı şekilde çalışır. Sonra gerçek dünya kapıyı çalar. Bir konteyner değil elli tane var; biri çökünce kim yeniden başlatacak, trafik artınca kim ölçekleyecek, yeni sürümü kesintisiz kim dağıtacak? İşte Kubernetes tam bu soruların cevabı: konteynerlerin <strong>orkestra şefi</strong>.</p>
+          <p>Kubernetes hakkındaki yaygın yanılgı, onun bir "konteyner yöneticisi" olduğudur. Değildir. Kubernetes, <strong>etcd'de duran istenen durumu gerçekliğe zorlayan, seviye tetiklemeli (level-triggered) bir kontrol sistemidir</strong>; konteynerler yalnızca bu sistemin en görünür çıktısı. Bu ayrımı içselleştirmeden yazılan her manifest, er ya da geç gece nöbetinde bir sayfaya dönüşür. Bu yazı, kümeyi gerçekten işletmiş birinin gözünden mekaniğe bakıyor: ne parlak bir giriş, ne de komut ezberi — sistemin neden böyle davrandığı.</p>
 
-          <p>Google'ın içeride yıllarca kullandığı Borg sisteminin açık kaynak mirasçısı olarak 2014'te doğdu, bugün CNCF çatısı altında fiili endüstri standardı. Kısaltması <code>k8s</code> — "K" ile "s" arasındaki sekiz harf.</p>
+          <h2>Control plane: tek kapı, tek hakikat, bağımsız denetçiler</h2>
+          <p>Mimarinin özü üç ilkedir. Birincisi, <code>kube-apiserver</code> <strong>tek giriş kapısıdır</strong>: kubelet dâhil hiçbir bileşen etcd'ye doğrudan dokunmaz; her şey apiserver'ın kimlik doğrulama → yetkilendirme → admission zincirinden geçer. İkincisi, <code>etcd</code> <strong>tek hakikat kaynağıdır</strong> ve Raft konsensüsüyle çalışır — bu yüzden control plane node sayısı çoğunluk (quorum) hesabıyla tek sayı seçilir ve etcd disk gecikmesi, kümenin bütününün gecikmesidir. Üçüncüsü, denetçiler (controller) birbirinden habersizdir: her biri yalnızca API'yi <em>watch</em> eder, kendi nesne türü için "mevcut ≠ istenen" gördüğünde fark kapatacak adımı atar. Deployment denetçisi ReplicaSet yazar, ReplicaSet denetçisi Pod yazar, scheduler boş <code>nodeName</code> alanını doldurur, kubelet kendi node'una atanmış Pod'u görüp konteyneri başlatır. Ortada hiçbir yerde "deploy et" diye bir komut akışı yoktur — <strong>zincirleme uzlaştırma</strong> vardır. Sistemin kesintiden sonra kaldığı yerden toparlanabilmesinin sebebi budur: olay kaçsa bile durum oradadır.</p>
 
-          <h2>Zihniyet değişimi: imperatif değil, deklaratif</h2>
-          <p>Kubernetes'i anlamanın anahtarı tek bir cümle: sisteme <em>ne yapacağını</em> değil, <em>neye benzemesi gerektiğini</em> söylersin. "Şu konteyneri başlat" demezsin; "bu uygulamadan her zaman üç kopya çalışsın" dersin. Kubernetes'in kontrol döngüleri sürekli mevcut durumu istenen durumla karşılaştırır ve aradaki farkı kapatır. Bir Pod ölürse yenisi açılır — sen uyurken bile.</p>
+          <blockquote>Edge-triggered sistemler olayı kaçırınca kaybolur; level-triggered sistemler bir sonraki döngüde durumu görüp toparlar. Kubernetes'in operasyonel dayanıklılığı bu tasarım tercihinin ürünüdür.</blockquote>
 
-          <blockquote>İstenen durumu tarif et, mevcut durumu dert etme. Uzlaştırma döngüsü (reconciliation loop) Kubernetes'in kalbidir.</blockquote>
+          <h2>Scheduling: filtrele, puanla — ama önce request yaz</h2>
+          <p>Scheduler iki fazda çalışır: önce Pod'u taşıyamayacak node'ları eler (yetersiz allocatable kaynak, uymayan <code>nodeSelector</code>/affinity, tolere edilmeyen taint), sonra kalanları puanlayıp en iyisini seçer. Kritik nokta şu: bu hesabın tamamı <strong>gerçek kullanıma değil, <code>requests</code> değerlerine</strong> dayanır. Request yazmayan ekip, scheduler'a kör uçuş yaptırır; node'lar kâğıt üstünde boş, gerçekte doygun olur ve sorun kendini rastgele OOM kill'lerle gösterir.</p>
+          <p>Request/limit ikilisi aynı zamanda Pod'un <strong>QoS sınıfını</strong> belirler: ikisi eşitse <em>Guaranteed</em>, request &lt; limit ise <em>Burstable</em>, hiçbiri yoksa <em>BestEffort</em> — ve node baskı altına girdiğinde eviction sırası tam tersinden işler. İki saha dersi: bellek limiti aşımı pazarlıksız OOM kill'dir; CPU limiti ise öldürmez, <strong>CFS kotasıyla boğar</strong> (throttling). Gecikmeye duyarlı servislerde p99'u sessizce şişiren klasik şüpheli, agresif CPU limitidir — çoğu olgun ekip CPU request'i doğru yazıp limiti ya kaldırır ya cömert tutar.</p>
+          <p>Yerleştirmeyi yönlendiren diğer araçlar da puanlamanın parçasıdır: taint/toleration ile node'ları iş yüklerine ayırırsın, <code>topologySpreadConstraints</code> ile kopyaları zone'lara dengeli dağıtırsın, <code>PodDisruptionBudget</code> ile de node drain sırasında aynı anda kaç kopyanın düşebileceğini sınırlarsın. PDB'siz bir kümede sıradan bir node upgrade'i, pekâlâ bir kesinti tatbikatıdır.</p>
 
-          <h2>Mimari: control plane ve worker node'lar</h2>
-          <p>Bir Kubernetes kümesi iki katmandan oluşur. <strong>Control plane</strong> beyindir: <code>kube-apiserver</code> tüm isteklerin giriş kapısı, <code>etcd</code> kümenin tüm durumunu tutan dağıtık anahtar-değer deposu, <code>scheduler</code> yeni Pod'lara node seçen yerleştirici, <code>controller-manager</code> ise uzlaştırma döngülerini çalıştıran denetçiler bütünü.</p>
-          <p><strong>Worker node'lar</strong> ise kas gücü. Her birinde <code>kubelet</code> (node üzerindeki ajan; Pod'ların sağlığından sorumlu), <code>kube-proxy</code> (ağ kurallarını yöneten bileşen) ve bir konteyner çalışma zamanı (containerd gibi) bulunur.</p>
+          <h2>Veri düzlemi: kubelet, CRI, CNI ve kube-proxy'nin gerçeği</h2>
+          <p>Node tarafında kubelet, atanmış Pod'ları CRI üzerinden (bugün fiilen containerd) çalıştırır ve sağlıklarını raporlar. Ağ, <strong>CNI eklentisine</strong> devredilmiştir: her Pod'un kümede yönlendirilebilir kendi IP'si vardır, NAT'sız düz bir ağ modeli geçerlidir. Hangi CNI'ı seçtiğin (Cilium, Calico...) NetworkPolicy yeteneklerinden gözlemlenebilirliğe kadar çok şeyi belirler — "varsayılanla devam" bir karar değil, ertelenmiş bir karardır.</p>
+          <p><strong>Service</strong> soyutlamasının altında da bir kutu yoktur: ClusterIP, hiçbir arayüzde dinlemeyen sanal bir adrestir. <code>kube-proxy</code>, EndpointSlice'ları izleyip her node'a iptables/IPVS kuralları yazar; paket, hedef Pod'a node üzerinde DNAT'lanarak gider. eBPF tabanlı CNI'lar bu katmanı tamamen devralabilir (kube-proxy replacement). Bunu bilmek, "Service'e bağlanamıyorum" biletinin yarısını çözer: sorun neredeyse hiçbir zaman Service'te değildir — ya readiness yüzünden boş kalan endpoint listesindedir, ya DNS'tedir, ya da bir NetworkPolicy'dedir. Bu arada NetworkPolicy'nin tuzağı da şudur: <strong>hiç policy yoksa her şey serbesttir</strong>; ilk policy geldiği an o Pod için varsayılan reddetmeye döner. Sıfırıncı günden namespace başına default-deny koymak, sonradan koymaktan kat kat ucuzdur.</p>
 
-          <h2>Temel yapı taşları</h2>
-          <h3>Pod</h3>
-          <p>Kubernetes'in en küçük birimi konteyner değil, <strong>Pod</strong>'dur: aynı ağ ve depolamayı paylaşan bir veya birkaç konteynerin zarfı. Pod'lar faridir — isimleri, IP'leri geçicidir; ölür, yerine yenisi doğar. Bu yüzden Pod'lara asla tek tek bağlanmazsın.</p>
+          <h2>İş yükü API'lerini doğru seçmek</h2>
+          <p><strong>Deployment</strong>, durumsuz servislerin aracıdır; rolling update'in kesintisizliği <code>maxSurge</code>/<code>maxUnavailable</code> ve <em>doğru bir readiness probe</em> üçlüsüne bağlıdır — probe yüzeyselse "başarılı" bir rollout, kırık sürümü trafiğe sokmanın en hızlı yoludur. <strong>StatefulSet</strong> sanılanın aksine "veritabanı çözümü" değildir; yalnızca kararlı kimlik, kopya başına kalıcı disk ve sıralı açılış garantisi verir — replikasyon, failover, yedekleme hâlâ senin (ya da bir operator'ün) işidir. <strong>DaemonSet</strong> node başına birer ajan (log toplayıcı, CNI, node-exporter) içindir; <strong>Job/CronJob</strong> ise bitmesi beklenen işler için — ve CronJob yazarken <code>concurrencyPolicy</code> ile kaçırılan tetiklerin davranışını düşünmediysen, onu üretime almadın demektir.</p>
 
-          <h3>Deployment</h3>
-          <p>Pod'ları elle oluşturmak yerine bir <strong>Deployment</strong> tanımlarsın: hangi imajdan kaç kopya istediğini söyler, sürüm geçişlerini (rolling update) ve geri almayı (rollback) o yönetir.</p>
-
-          <pre><span class="sig"># deployment.yaml — üç kopyalı bir web uygulaması</span>
+          <pre><span class="sig"># üretim kalitesinde bir Deployment iskeleti — her satırın bir sebebi var</span>
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: api
 spec:
   replicas: 3
+  strategy:
+    rollingUpdate: { maxSurge: 1, maxUnavailable: 0 }
   selector:
-    matchLabels:
-      app: web
+    matchLabels: { app: api }
   template:
     metadata:
-      labels:
-        app: web
+      labels: { app: api }
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels: { app: api }
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: { type: RuntimeDefault }
       containers:
-        - name: web
-          image: ghcr.io/rbclabs/web:1.4.2
-          ports:
-            - containerPort: 8080
+        - name: api
+          image: ghcr.io/rbclabs/api@sha256:4f8c...   <span class="sig"># tag değil digest: imaj değişmez</span>
           resources:
-            requests: { cpu: 100m, memory: 128Mi }
-            limits:   { cpu: 500m, memory: 256Mi }</pre>
+            requests: { cpu: 250m, memory: 256Mi }
+            limits:   { memory: 256Mi }               <span class="sig"># CPU limiti bilinçli olarak yok</span>
+          readinessProbe:
+            httpGet: { path: /healthz/ready, port: 8080 }
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /healthz/live, port: 8080 }
+            initialDelaySeconds: 10
+          lifecycle:
+            preStop:
+              exec: { command: ["sleep", "5"] }       <span class="sig"># endpoint listesinden düşmeyi bekle</span>
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }</pre>
 
-          <h3>Service ve Ingress</h3>
-          <p>Pod'lar gelip geçici olduğuna göre onlara nasıl ulaşılır? <strong>Service</strong>, etiket seçicisiyle eşleşen Pod'ların önünde sabit bir sanal IP ve DNS adı sunar; trafiği sağlıklı Pod'lara dağıtır. Dış dünyadan HTTP trafiğini içeri almak içinse <strong>Ingress</strong> (ya da yeni nesil Gateway API) kullanılır: alan adı ve yol bazlı yönlendirme, TLS sonlandırma hep onun işi.</p>
+          <p>Buradaki en az bilinen satır <code>preStop</code>'taki beş saniyedir: Pod sonlanmaya başladığında SIGTERM ile endpoint listesinden silinme <em>paralel</em> ilerler; uygulama bağlantıları anında kapatırsa, kural tablosu henüz güncellenmemiş node'lardan gelen istekler duvara çarpar. Küçük bir bekleme + uygulamada düzgün SIGTERM işleme, rolling update sırasındaki "açıklanamayan" 502'lerin ilacıdır.</p>
 
-          <h3>ConfigMap ve Secret</h3>
-          <p>Yapılandırmayı imajın içine gömmek, konteyner dünyasının baş günahıdır. Ortam değişkenleri ve ayar dosyaları <code>ConfigMap</code>'te, parolalar ve API anahtarları <code>Secret</code>'ta durur; Pod'lara ortam değişkeni ya da dosya olarak bağlanır.</p>
-
-          <h2>Günlük hayatta kubectl</h2>
-          <p>Kümeyle konuşmanın aracı <code>kubectl</code>. Günün büyük kısmı şu birkaç komutla geçer:</p>
-
-          <pre><span class="sig"># durumu uygula, izle, teşhis et</span>
-$ kubectl apply -f deployment.yaml
-$ kubectl get pods -o wide
-$ kubectl describe pod web-7d4b9c-x2k8f
-$ kubectl logs -f deploy/web
-$ kubectl exec -it deploy/web -- sh
-$ kubectl rollout undo deploy/web   <span class="sig"># bir önceki sürüme dön</span></pre>
-
-          <h2>Üretime çıkarken: beş pratik not</h2>
+          <h2>Güvenlik: dört ayrı sınır, dört ayrı iş</h2>
           <ul>
-            <li><strong>Probe'ları tanımla.</strong> <code>livenessProbe</code> kilitlenen konteyneri yeniden başlatır, <code>readinessProbe</code> hazır olmayan Pod'a trafik gitmesini engeller. İkisi olmadan "çalışıyor görünüp çalışmayan" uygulamalar kaçınılmazdır.</li>
-            <li><strong>Resource request/limit koy.</strong> Request olmadan scheduler kör yerleştirme yapar; limit olmadan tek bir sızıntılı servis bütün node'u açlığa mahkûm eder.</li>
-            <li><strong>HPA ile ölçekle.</strong> HorizontalPodAutoscaler, CPU ya da özel metriklere göre kopya sayısını kendisi ayarlar — trafiğin dalgalıysa elle <code>replicas</code> güncellemek yerine bunu kur.</li>
-            <li><strong>Namespace ve RBAC'i baştan kur.</strong> Ortamları (dev/staging/prod) ve ekipleri namespace'lerle ayır, erişimi en az yetki ilkesiyle RBAC üzerinden ver. Güvenlik sonradan eklenen bir özellik değildir.</li>
-            <li><strong>YAML'ları Git'te tut.</strong> Küme durumunun tek doğruluk kaynağı Git deposu olsun; Argo CD ya da Flux gibi bir GitOps aracı onu kümeye senkronlasın. <code>kubectl apply</code>'ı elle çalıştırdığın her gün, bir drift günüdür.</li>
+            <li><strong>Kimlik ve yetki (RBAC):</strong> En az yetki, namespace bazlı Role'ler; <code>cluster-admin</code> dağıtmak çözüm değil, teknik borç senedidir. İnsan erişimi OIDC ile federe edilmeli, ServiceAccount token'ları kısa ömürlü projected token olmalı.</li>
+            <li><strong>Pod sınırı:</strong> Pod Security Standards'ın <em>restricted</em> profili (non-root, seccomp, capability drop) namespace etiketiyle zorlanır. Konteyner izolasyonu bir hipervizör değildir; root konteyner, node'a açılan kapıdır.</li>
+            <li><strong>Ağ sınırı:</strong> Default-deny + açık izinler. Doğu-batı trafiği, policy yoksa tamamen serbesttir — çoğu kümenin sessiz gerçeği budur.</li>
+            <li><strong>Tedarik zinciri:</strong> İmajlar digest ile sabitlenir, imza/attestation admission'da doğrulanır (cosign + policy controller), Secret'lar etcd'de şifrelenir ya da hiç oraya girmez (External Secrets ile dış kasadan okunur). <code>Secret</code>'ın varsayılanda yalnızca base64 olduğunu ekipte herkesin bilmesi gerekir.</li>
           </ul>
 
-          <h2>Ne zaman Kubernetes, ne zaman değil?</h2>
-          <p>Dürüst olalım: tek konteynerlik bir yan proje için Kubernetes, sinek öldürmek için balyoz taşımaktır. Tek sunucuda Docker Compose, yönetilen bir PaaS ya da basit bir VM çoğu zaman yeter. Kubernetes; birden çok servisin, ekiplerin, ortamların ve "gece 3'te kendi kendini iyileştirsin" beklentisinin olduğu yerde parlar. O noktaya geldiğinde de kümeyi sıfırdan kurmak yerine yönetilen servisleri (EKS, GKE, AKS) tercih etmek, control plane derdini paraya çevirmenin en makul yoludur.</p>
+          <h2>İşletme disiplini: GitOps, sürüm makası, kapasite</h2>
+          <p>Olgun bir kümede <code>kubectl apply</code> insan elinden çıkmaz: istenen durum Git'tedir, Argo CD ya da Flux onu kümeye uzlaştırır — böylece "kim, neyi, ne zaman değiştirdi" sorusunun cevabı bir <code>git log</code>'dur ve drift tanım gereği görünürdür. Upgrade'lerde sürüm makası (version skew) kuralları ciddiye alınır: control plane önce, node'lar sonra; kubelet apiserver'dan en fazla izin verilen kadar geride. Her minor sürümün API kaldırımları (deprecation) release notlarından değil, <code>kubectl deprecations</code> benzeri araçlarla CI içinde taranır — üretimde <code>apiVersion</code> hatasıyla tanışmanın en pahalı yeri, upgrade gecesidir.</p>
+          <p>Ölçekleme üç katmandır ve karıştırılmamalıdır: <strong>HPA</strong> kopya sayısını metrikle oynatır (CPU yüzdesi çoğu zaman yanlış metriktir; istek gecikmesi ya da kuyruk derinliği gibi işin diline yakın bir sinyal seç), <strong>VPA</strong> request'leri gerçeğe yaklaştırır, <strong>Cluster Autoscaler / Karpenter</strong> node havuzunu büyütüp küçültür. Üçünün uyumu kapasite planlamasıdır; uyumsuzluğu ise ay sonu bulut faturasında okunur.</p>
+
+          <h2>Teşhis refleksleri</h2>
+          <pre><span class="sig"># semptomdan köke inen tipik hat</span>
+$ kubectl get events --sort-by=.lastTimestamp -A   <span class="sig"># önce olaylar: scheduler/kubelet ne diyor?</span>
+$ kubectl describe pod api-7d4b9c-x2k8f            <span class="sig"># Pending mi, CrashLoop mu, OOMKilled mı?</span>
+$ kubectl logs api-7d4b9c-x2k8f --previous          <span class="sig"># ölen konteynerin son sözleri</span>
+$ kubectl get endpointslices -l app=api             <span class="sig"># "Service çalışmıyor" = çoğu kez boş endpoint</span>
+$ kubectl debug node/worker-3 -it --image=busybox   <span class="sig"># node seviyesine in, çekinme</span>
+$ kubectl top pods --sort-by=memory                 <span class="sig"># limit'e sürtünen kim?</span></pre>
+          <p>Desen hep aynıdır: <strong>önce kümenin anlattığı hikâyeyi dinle</strong> (events, conditions, status alanları), sonra uygulamaya in. <code>CrashLoopBackOff</code> bir hata değil semptomdur; <code>Pending</code> ise neredeyse her zaman kaynak/affinity/taint üçgeninde bir yerdedir ve cevabı describe çıktısının son satırlarında yazar.</p>
+
+          <h2>Ne zaman Kubernetes?</h2>
+          <p>Dürüst mühendislik cevabı: <strong>organizasyonun bir platform ekibi taşıyabildiği zaman.</strong> Kubernetes'in maliyeti YAML yazmak değil; upgrade döngüsü, CNI/CSI/ingress seçimleri, güvenlik tabanı ve on-call kültürüdür. Tek ürünlü küçük bir ekip için yönetilen PaaS ya da düz VM + Compose, çoğu zaman daha doğru mühendisliktir. Birden çok ekip, ortam ve servis; standart bir dağıtım sözleşmesi ihtiyacı; "gece 3'te kendini iyileştirsin" beklentisi — Kubernetes bu denklemde amorti olur. O noktada da control plane'i satın al (EKS/GKE/AKS), farkı iş yüküne harca.</p>
 
           <hr />
 
-          <p>Özet: Kubernetes bir araç değil, bir sözleşme. Sen istenen durumu tarif ediyorsun; o, gerçekliği her saniye o tarife doğru itiyor. Deklaratif düşünmeye alıştığın an — ki bu biraz zaman alır — geri dönmek istemeyeceksin.</p>
+          <p>Özet: Kubernetes'e ustalaşmak komut öğrenmek değil, <strong>uzlaştırma döngüsü gibi düşünmeyi</strong> öğrenmektir. İstenen durumu eksiksiz tarif et, sistemin durumu okuma biçimini (events, conditions, probes) işinin parçası yap, sınırları — kaynak, ağ, yetki — baştan çiz. Gerisi, her saniye senin lehine çalışan bir kontrol teorisi.</p>
         </div>
 
         <!-- Footer -->
@@ -302,7 +319,7 @@ $ kubectl rollout undo deploy/web   <span class="sig"># bir önceki sürüme dö
         const prose = document.querySelector('#prose');
         const bar = document.querySelector('#hl-bar');
         if (!prose || !bar) return;
-        const KEY = 'rbc-hl:kubernetes:v1';
+        const KEY = 'rbc-hl:kubernetes:v2';
         let pen = null; // 'yellow' | 'green' | 'pink' | 'erase' | null
 
         // restore saved highlights (per-browser convenience; may be unavailable)
