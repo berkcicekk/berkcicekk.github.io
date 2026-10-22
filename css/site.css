@@ -32,6 +32,14 @@ body { background: #0B0B0C; color: #F7F7F5; }
 .row-line { border-top: 1px solid rgba(247,247,245,.14); }
 .row-line:last-child { border-bottom: 1px solid rgba(247,247,245,.14); }
 
+/* Worked-with partners: brand colors on hover */
+.partner { transition: color .3s ease; }
+.partner-erasmus:hover { color: #2E6FD4; }
+.partner-siber:hover .sv-red { color: #E30A17; }
+.partner-siber:hover .sv-white { color: #F7F7F5; }
+.partner-stellar:hover { color: #FDDA24; }
+.partner-siber .sv-red, .partner-siber .sv-white { transition: color .3s ease; }
+
 /* Giant footer marquee (home only) */
 @keyframes bigmarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .bigmarquee-track { animation: bigmarquee 22s linear infinite; }
