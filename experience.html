@@ -100,6 +100,32 @@
       .bcard-motto { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: .1em; color: #C8F03C; }
       @media (max-width: 480px) { .bcard-name { font-size: 1.35rem; } .bcard-face { padding: 1.1rem 1.25rem; } }
       @media (prefers-reduced-motion: reduce) { #bcard-inner { transition: none; } }
+
+      /* 3D trophy in the awards panel */
+      #trophy-scene { perspective: 700px; flex: none; }
+      #trophy {
+        width: 76px; transform-style: preserve-3d; will-change: transform;
+        animation: trophy-bob 3.6s ease-in-out infinite;
+        filter: drop-shadow(0 10px 16px rgba(11,11,12,.22));
+        transition: filter .3s ease;
+      }
+      #trophy svg { display: block; width: 100%; height: auto; }
+      @keyframes trophy-bob {
+        0%, 100% { transform: translateY(0) rotateY(-16deg); }
+        50%      { transform: translateY(-7px) rotateY(16deg); }
+      }
+      @keyframes trophy-spin {
+        from { transform: translateY(-4px) rotateY(0deg); }
+        to   { transform: translateY(-4px) rotateY(360deg); }
+      }
+      #trophy-scene:hover #trophy {
+        animation: trophy-spin 1s linear infinite;
+        filter: drop-shadow(0 14px 26px rgba(201,161,43,.5));
+      }
+      @media (max-width: 480px) { #trophy { width: 58px; } }
+      @media (prefers-reduced-motion: reduce) {
+        #trophy, #trophy-scene:hover #trophy { animation: none; transform: rotateY(-12deg); }
+      }
     </style>
   </head>
   <body class="font-sans antialiased">
@@ -214,7 +240,42 @@
 
       <!-- Awards panel -->
       <section data-reveal class="mt-16 rounded-[2.5rem] bg-paper px-6 py-12 text-ink sm:px-14 sm:py-16">
-        <p class="micro text-ink/50" data-i18n="awards.title">( Awards &amp; education )</p>
+        <div class="flex items-start justify-between gap-6">
+          <p class="micro text-ink/50" data-i18n="awards.title">( Awards &amp; education )</p>
+          <div id="trophy-scene" aria-hidden="true">
+            <div id="trophy">
+              <svg viewBox="0 0 120 118" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#D9AE3E"/>
+                    <stop offset=".45" stop-color="#F9DF7B"/>
+                    <stop offset="1" stop-color="#AD7E18"/>
+                  </linearGradient>
+                  <linearGradient id="gold-dark" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#B8860B"/>
+                    <stop offset=".5" stop-color="#D9AE3E"/>
+                    <stop offset="1" stop-color="#8A6A10"/>
+                  </linearGradient>
+                </defs>
+                <!-- handles -->
+                <path d="M30 30 C 9 30, 9 57, 33 61" fill="none" stroke="url(#gold-dark)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M90 30 C 111 30, 111 57, 87 61" fill="none" stroke="url(#gold-dark)" stroke-width="7" stroke-linecap="round"/>
+                <!-- rim + bowl -->
+                <rect x="26" y="16" width="68" height="9" rx="4.5" fill="url(#gold)"/>
+                <path d="M30 25 h60 c0 28 -12 44 -30 44 c-18 0 -30 -16 -30 -44 z" fill="url(#gold)"/>
+                <!-- shine -->
+                <path d="M39 30 c0 16 5 27 12 33" stroke="rgba(255,255,255,.55)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <!-- star -->
+                <path d="M60 34 l3.4 6.9 7.6 1.1 -5.5 5.3 1.3 7.5 -6.8 -3.6 -6.8 3.6 1.3 -7.5 -5.5 -5.3 7.6 -1.1 z" fill="#8A6A10" opacity=".55"/>
+                <!-- stem + base -->
+                <path d="M54 69 h12 c0 8 2.5 13 6.5 16 h-25 c4 -3 6.5 -8 6.5 -16 z" fill="url(#gold-dark)"/>
+                <rect x="40" y="85" width="40" height="9" rx="2.5" fill="#B8860B"/>
+                <rect x="31" y="94" width="58" height="14" rx="4" fill="url(#gold)"/>
+                <rect x="49" y="97.5" width="22" height="7" rx="1.8" fill="#8A6A10" opacity=".5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
         <div class="mt-8 grid gap-x-10 gap-y-3 text-sm font-medium sm:grid-cols-2">
           <div class="flex items-baseline justify-between border-b border-ink/15 pb-2"><span>Stellar Pro Hackathon #1 — Rise In</span><span class="micro text-ink/60">2026</span></div>
           <div class="flex items-baseline justify-between border-b border-ink/15 pb-2"><span>HackSolana #1 — SuperteamTR</span><span class="micro text-ink/60">2024</span></div>
