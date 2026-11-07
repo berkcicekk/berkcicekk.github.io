@@ -46,43 +46,76 @@
     }
     </script>
 
-    <link rel="stylesheet" href="css/tailwind.css?v=20261022" />
+    <link rel="stylesheet" href="css/tailwind.css?v=20261107" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon-180.png" />
-    <link rel="stylesheet" href="css/site.css?v=20261022" />
+    <link rel="stylesheet" href="css/site.css?v=20261107" />
     <style>
-      /* ---- library shelf ---- */
+      /* ---- library shelf: flat spines, the picked book turns to show its cover ---- */
+      .lib-head { display: flex; align-items: center; gap: 1.1rem; }
+      .lib-head::before, .lib-head::after { content: ''; width: 64px; height: 1px; background: rgba(247,247,245,.28); }
+      #shelf { display: flex; align-items: flex-end; gap: 16px; --bh: 272px; --cw: 186px; }
       #shelf .book {
-        position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-        gap: .5rem; width: var(--w, 66px); height: var(--h, 240px); padding: 16px 0 12px; flex: none;
-        border-radius: 5px 9px 9px 5px; cursor: pointer; border: 1px solid rgba(247,247,245,.08);
-        transform: rotate(var(--lean, 0deg)); transform-origin: bottom center;
-        transition: transform .45s cubic-bezier(.2,.85,.3,1), box-shadow .45s ease;
-        box-shadow: inset 7px 0 12px -7px rgba(0,0,0,.7), inset -3px 0 7px -4px rgba(247,247,245,.12), 0 16px 28px rgba(0,0,0,.45);
+        position: relative; flex: none; width: var(--sw, 46px); height: var(--bh); padding: 0; border: 0; background: none;
+        cursor: pointer; perspective: 1600px; outline: none;
+        transition: width .75s cubic-bezier(.2,.8,.2,1), transform .45s cubic-bezier(.2,.85,.3,1);
       }
-      #shelf .book:hover, #shelf .book:focus-visible {
-        transform: translateY(-18px) rotate(0deg); outline: none;
-        box-shadow: inset 7px 0 12px -7px rgba(0,0,0,.7), inset -3px 0 7px -4px rgba(247,247,245,.12),
-          0 30px 46px rgba(0,0,0,.6), 0 0 0 1px rgba(200,240,60,.3), 0 24px 60px rgba(200,240,60,.12);
+      #shelf .book:not(.is-open):hover, #shelf .book:not(.is-open):focus-visible { transform: translateY(-12px); }
+      #shelf .book.is-open { width: calc(var(--cw) * .98 + var(--sw, 46px) * .21); }
+      #shelf .book.is-open:hover { transform: translateY(-6px); }
+      #shelf .book:focus-visible .book-spine, #shelf .book:focus-visible .book-cover { box-shadow: 0 0 0 2px #C8F03C; }
+      .book-3d {
+        position: absolute; left: 0; top: 0; width: var(--sw, 46px); height: 100%;
+        transform-style: preserve-3d; transform-origin: right center;
+        transition: transform .75s cubic-bezier(.2,.8,.2,1);
       }
-      .book-band { display: block; width: 68%; height: 3px; border-radius: 2px; }
-      .book-title { writing-mode: vertical-rl; flex: 1; display: flex; align-items: center; font-weight: 600; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
+      #shelf .book.is-open .book-3d { transform: translateX(calc(var(--sw, 46px) * -.792)) rotateY(-78deg); }
+      .book-spine, .book-cover { position: absolute; top: 0; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; color: var(--fg); }
+      .book-spine {
+        left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 16px 0 12px;
+        background: linear-gradient(90deg, var(--bg2), var(--bg) 45%, var(--bg3));
+        box-shadow: inset 0 0 0 1px rgba(247,247,245,.06), 0 18px 34px rgba(0,0,0,.45);
+      }
+      .book-title { writing-mode: vertical-rl; font-weight: 600; font-size: 13px; letter-spacing: .02em; white-space: nowrap; }
       .book-num { font-family: 'Geist Mono', monospace; font-size: 9px; opacity: .55; letter-spacing: .1em; }
-      .book-devops { background: linear-gradient(90deg, #26262b, #1C1C1F 55%, #17171a); color: #E6E6E3; }
-      .book-devops .book-band { background: #8A8A8F; }
-      .book-cyber { background: linear-gradient(90deg, #1b1b1e, #101012 60%, #0d0d0f); color: #E6E6E3; }
-      .book-cyber .book-band { background: #C8F03C; }
-      .book-sib { background: linear-gradient(90deg, #46464e, #33333a 60%, #2b2b31); color: #F7F7F5; }
-      .book-sib .book-band { background: #E6E6E3; }
-      .book-chain { background: linear-gradient(90deg, #d7f968, #C8F03C 55%, #accf31); color: #0B0B0C; border-color: rgba(11,11,12,.2); }
-      .book-chain .book-band { background: #0B0B0C; }
-      .book-islamic { background: linear-gradient(90deg, #ffffff, #F7F7F5 50%, #E6E6E3); color: #0B0B0C; border-color: rgba(11,11,12,.12); }
-      .book-islamic .book-band { background: #C8F03C; }
-      .book-islamic .book-title { font-family: 'Instrument Serif', serif; font-style: italic; text-transform: none; font-size: 17px; letter-spacing: .08em; }
-      .shelf-plank { height: 10px; border-radius: 999px; background: linear-gradient(180deg, #2A2A2F, #1A1A1D); box-shadow: 0 14px 30px rgba(0,0,0,.55), inset 0 1px 0 rgba(247,247,245,.08); }
+      .book-cover {
+        left: 100%; width: var(--cw); transform-origin: left center; transform: rotateY(90deg);
+        display: flex; flex-direction: column; padding: 16px 16px 14px; text-align: left;
+        background: linear-gradient(100deg, var(--bg2) 0%, var(--bg) 9%, var(--bg) 70%, var(--bg3));
+        box-shadow: inset 0 0 0 1px rgba(247,247,245,.07), 0 28px 50px rgba(0,0,0,.55);
+      }
+      .cover-top, .cover-author, .cover-count { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; opacity: .55; }
+      .cover-art {
+        position: relative; margin: 18px auto 0; width: 74%; aspect-ratio: 1; border-radius: 24%; overflow: hidden; display: grid; place-items: center;
+        background:
+          radial-gradient(var(--dot) 1.1px, transparent 1.5px) 0 0 / 9px 9px,
+          radial-gradient(circle at 28% 22%, var(--glow), transparent 62%),
+          radial-gradient(circle at 80% 85%, var(--glow2), transparent 55%),
+          var(--art);
+        box-shadow: inset 0 0 0 1px rgba(247,247,245,.08);
+      }
+      .cover-glyph { font-family: 'Geist Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: -.04em; color: var(--fg); }
+      .cover-title { margin-top: auto; font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: -.04em; }
+      .cover-meta { display: flex; justify-content: space-between; gap: .5rem; margin-top: 10px; white-space: nowrap; }
+      .book-devops  { --bg: #1C1C1F; --bg2: #26262b; --bg3: #151517; --fg: #E6E6E3; --art: #0B0B0C; --dot: rgba(247,247,245,.14); --glow: rgba(138,138,143,.55); --glow2: rgba(200,240,60,.18); --sw: 46px; }
+      .book-cyber   { --bg: #101012; --bg2: #1b1b1e; --bg3: #0b0b0c; --fg: #E6E6E3; --art: #0B0B0C; --dot: rgba(200,240,60,.22); --glow: rgba(200,240,60,.5); --glow2: rgba(200,240,60,.12); --sw: 52px; }
+      .book-sib     { --bg: #33333A; --bg2: #46464e; --bg3: #2b2b31; --fg: #F7F7F5; --art: #1C1C1F; --dot: rgba(247,247,245,.16); --glow: rgba(230,230,227,.45); --glow2: rgba(138,138,143,.3); --sw: 42px; }
+      .book-chain   { --bg: #C8F03C; --bg2: #d7f968; --bg3: #accf31; --fg: #0B0B0C; --art: #0B0B0C; --dot: rgba(200,240,60,.3); --glow: rgba(200,240,60,.6); --glow2: rgba(247,247,245,.15); --sw: 54px; }
+      .book-chain .cover-glyph { color: #C8F03C; }
+      .book-islamic { --bg: #F7F7F5; --bg2: #ffffff; --bg3: #E6E6E3; --fg: #0B0B0C; --art: #E6E6E3; --dot: rgba(11,11,12,.12); --glow: rgba(200,240,60,.75); --glow2: rgba(11,11,12,.08); --sw: 44px; }
+      .book-islamic .book-title, .book-islamic .cover-title { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 17px; letter-spacing: .02em; }
+      .book-islamic .cover-title { font-size: 28px; }
+      @media (max-width: 640px) {
+        #shelf { gap: 6px; --bh: 220px; --cw: 144px; }
+        #shelf .book { --sw: 34px; }
+        .book-cover { padding: 14px 12px 12px; }
+        .cover-top, .cover-author, .cover-count { letter-spacing: .08em; }
+        .cover-title { font-size: 18px; }
+        .cover-glyph { font-size: 24px; }
+      }
 
       /* ---- open book modal ---- */
       #book-modal { position: fixed; inset: 0; z-index: 90; display: none; }
@@ -109,7 +142,7 @@
         .bm-page { padding: 1.5rem 1.4rem; }
       }
       @media (prefers-reduced-motion: reduce) {
-        #shelf .book, .bm-book, .bm-backdrop { transition: none; }
+        #shelf .book, .book-3d, .bm-book, .bm-backdrop { transition: none; }
       }
     </style>
   </head>
@@ -170,40 +203,70 @@
 
         <!-- The library: five books, one per theme -->
         <div class="flex w-full min-w-0 flex-col items-center lg:border-l lg:border-paper/10 lg:py-12">
-          <p data-reveal class="micro text-paper/40" data-i18n="lib.title">( The library )</p>
-          <div data-reveal style="--d:120ms" class="mt-10 w-full overflow-x-auto pb-4">
+          <h2 data-reveal class="lib-head serif-accent text-2xl text-paper/90" data-i18n="lib.title">The library</h2>
+          <div data-reveal style="--d:120ms" class="mt-10 w-full overflow-x-auto pb-4 pt-4">
           <div class="mx-auto w-fit px-4">
-            <div id="shelf" class="flex items-end gap-3 sm:gap-5">
-              <button type="button" class="book book-devops" data-book="devops" data-num="01" data-title="DevOps" style="--h:240px;--w:68px">
-                <span class="book-band" aria-hidden="true"></span>
-                <span class="book-title">DevOps</span>
-                <span class="book-num">01</span>
+            <!-- One button per book. data-book must match a .bm-list[data-list] in the modal below. -->
+            <div id="shelf">
+              <button type="button" class="book book-devops" data-book="devops" data-num="01" data-title="DevOps">
+                <span class="book-3d">
+                  <span class="book-spine"><span class="book-title">DevOps</span><span class="book-num">01</span></span>
+                  <span class="book-cover" aria-hidden="true">
+                    <span class="cover-top">rbc library — 01</span>
+                    <span class="cover-art"><span class="cover-glyph">&gt;_</span></span>
+                    <span class="cover-title">DevOps</span>
+                    <span class="cover-meta"><span class="cover-author">Berk Çiçek</span><span class="cover-count"></span></span>
+                  </span>
+                </span>
               </button>
-              <button type="button" class="book book-cyber" data-book="cyber" data-num="02" data-title="Cyber Security" style="--h:268px;--w:74px">
-                <span class="book-band" aria-hidden="true"></span>
-                <span class="book-title">Cyber Security</span>
-                <span class="book-num">02</span>
+              <button type="button" class="book book-cyber" data-book="cyber" data-num="02" data-title="Cyber Security">
+                <span class="book-3d">
+                  <span class="book-spine"><span class="book-title">Cyber Security</span><span class="book-num">02</span></span>
+                  <span class="book-cover" aria-hidden="true">
+                    <span class="cover-top">rbc library — 02</span>
+                    <span class="cover-art"><span class="cover-glyph">0x</span></span>
+                    <span class="cover-title">Cyber Security</span>
+                    <span class="cover-meta"><span class="cover-author">Berk Çiçek</span><span class="cover-count"></span></span>
+                  </span>
+                </span>
               </button>
-              <button type="button" class="book book-sib" data-book="sibernetik" data-num="03" data-title="Sibernetik" style="--h:230px;--w:62px;--lean:5deg">
-                <span class="book-band" aria-hidden="true"></span>
-                <span class="book-title">Sibernetik</span>
-                <span class="book-num">03</span>
+              <button type="button" class="book book-sib" data-book="sibernetik" data-num="03" data-title="Sibernetik">
+                <span class="book-3d">
+                  <span class="book-spine"><span class="book-title">Sibernetik</span><span class="book-num">03</span></span>
+                  <span class="book-cover" aria-hidden="true">
+                    <span class="cover-top">rbc library — 03</span>
+                    <span class="cover-art"><span class="cover-glyph">∞</span></span>
+                    <span class="cover-title">Sibernetik</span>
+                    <span class="cover-meta"><span class="cover-author">Berk Çiçek</span><span class="cover-count"></span></span>
+                  </span>
+                </span>
               </button>
-              <button type="button" class="book book-chain" data-book="blockchain" data-num="04" data-title="Blockchain" style="--h:258px;--w:78px">
-                <span class="book-band" aria-hidden="true"></span>
-                <span class="book-title">Blockchain</span>
-                <span class="book-num">04</span>
+              <button type="button" class="book book-chain is-open" data-book="blockchain" data-num="04" data-title="Blockchain">
+                <span class="book-3d">
+                  <span class="book-spine"><span class="book-title">Blockchain</span><span class="book-num">04</span></span>
+                  <span class="book-cover" aria-hidden="true">
+                    <span class="cover-top">rbc library — 04</span>
+                    <span class="cover-art"><span class="cover-glyph">[#]</span></span>
+                    <span class="cover-title">Blockchain</span>
+                    <span class="cover-meta"><span class="cover-author">Berk Çiçek</span><span class="cover-count"></span></span>
+                  </span>
+                </span>
               </button>
-              <button type="button" class="book book-islamic" data-book="islamic" data-num="05" data-title="Islamic" style="--h:246px;--w:66px">
-                <span class="book-band" aria-hidden="true"></span>
-                <span class="book-title">Islamic</span>
-                <span class="book-num">05</span>
+              <button type="button" class="book book-islamic" data-book="islamic" data-num="05" data-title="Islamic">
+                <span class="book-3d">
+                  <span class="book-spine"><span class="book-title">Islamic</span><span class="book-num">05</span></span>
+                  <span class="book-cover" aria-hidden="true">
+                    <span class="cover-top">rbc library — 05</span>
+                    <span class="cover-art"><span class="cover-glyph">۞</span></span>
+                    <span class="cover-title">Islamic</span>
+                    <span class="cover-meta"><span class="cover-author">Berk Çiçek</span><span class="cover-count"></span></span>
+                  </span>
+                </span>
               </button>
             </div>
-            <div class="shelf-plank"></div>
           </div>
           </div>
-          <p class="micro mt-6 text-paper/30" data-i18n="lib.hint">( pick a book )</p>
+          <p class="micro mt-6 text-paper/30" data-i18n="lib.hint">( pick a book · click the cover to read )</p>
         </div>
       </section>
     </main>
@@ -254,7 +317,7 @@
         </div>
         <div class="flex flex-col items-end gap-6">
           <img src="assets/images/rbc-yatay-siyah.svg" alt="rbclabs logo" class="h-10 w-auto object-contain" />
-          <a href="#" class="to-top" data-i18n="footer.top" class="rounded-full border border-ink/20 px-5 py-2.5 text-xs font-medium transition hover:border-ink/50">Back to top ↑</a>
+          <a href="#" class="to-top rounded-full border border-ink/20 px-5 py-2.5 text-xs font-medium transition hover:border-ink/50" data-i18n="footer.top">Back to top ↑</a>
         </div>
       </div>
       <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between border-t border-ink/10 px-6 py-6 sm:px-10">
@@ -267,15 +330,15 @@
       window.pageTranslations = {
         en: {
           page: { title: 'Notes &', titleAccent: 'writing', sub: 'Security, Solidity and blockchain — lessons learned, written down.', portal: '( Medium — @cckberk · click to enter )' },
-          lib: { title: '( The library )', portalTitle: '( The portal )', hint: '( pick a book )', empty: 'This shelf is still being written…', all: 'all articles — medium ↗' },
+          lib: { title: 'The library', portalTitle: '( The portal )', hint: '( pick a book · click the cover to read )', empty: 'This shelf is still being written…', all: 'all articles — medium ↗' },
         },
         tr: {
           page: { title: 'Notlar &', titleAccent: 'yazılar', sub: 'Güvenlik, Solidity ve blokzincir — öğrenilenler, yazıya dökülmüş hâliyle.', portal: '( Medium — @cckberk · girmek için tıkla )' },
-          lib: { title: '( Kütüphane )', portalTitle: '( Portal )', hint: '( bir kitap seç )', empty: 'Bu raf henüz yazılıyor…', all: 'tüm yazılar — medium ↗' },
+          lib: { title: 'Kütüphane', portalTitle: '( Portal )', hint: '( bir kitap seç · okumak için kapağa tıkla )', empty: 'Bu raf henüz yazılıyor…', all: 'tüm yazılar — medium ↗' },
         },
         de: {
           page: { title: 'Notizen &', titleAccent: 'Artikel', sub: 'Sicherheit, Solidity und Blockchain — Gelerntes, aufgeschrieben.', portal: '( Medium — @cckberk · zum Öffnen klicken )' },
-          lib: { title: '( Bibliothek )', portalTitle: '( Das Portal )', hint: '( wähl ein Buch )', empty: 'Dieses Regal wird noch geschrieben…', all: 'alle Artikel — medium ↗' },
+          lib: { title: 'Bibliothek', portalTitle: '( Das Portal )', hint: '( wähl ein Buch · zum Lesen aufs Cover klicken )', empty: 'Dieses Regal wird noch geschrieben…', all: 'alle Artikel — medium ↗' },
         },
       };
     </script>

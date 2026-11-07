@@ -40,6 +40,7 @@
       b.className = b.dataset.lang === lang ? 'text-paper transition-colors' : 'transition-colors hover:text-paper';
     });
     try { localStorage.setItem('rbclabs-language', lang); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('rbc:lang', { detail: lang }));
   };
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setLanguage(b.dataset.lang)));
   let savedLang = 'en';
@@ -64,6 +65,7 @@
     lenis = new window.Lenis({ duration: 1.15, wheelMultiplier: 1, smoothWheel: true });
     const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
+    window.rbcLenis = lenis; // page scripts (works deck) scroll through it
   }
   document.querySelectorAll('.to-top').forEach((el) => {
     el.addEventListener('click', (event) => {
