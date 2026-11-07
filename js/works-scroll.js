@@ -16,14 +16,13 @@
   const stage = deck.querySelector('.deck-stage');
   const $ = (id) => deck.querySelector(id);
   const ui = {
-    idx: $('#deck-idx'), of: $('#deck-of'), total: $('#deck-total'),
+    idx: $('#deck-idx'), of: $('#deck-of'),
     cat: $('#deck-cat'), year: $('#deck-year'), tags: $('#deck-tags'),
     text: $('#deck-text'), title: $('#deck-title'), desc: $('#deck-desc'),
     action: $('#deck-action'), link: $('#deck-link'), status: $('#deck-status'),
   };
   const pad = (n) => String(n).padStart(2, '0');
   ui.of.textContent = pad(N);
-  ui.total.textContent = pad(N);
 
   const STEP_VH = 70;          // scroll distance per project
   const MAX_TILT = 68;         // degrees, for the cards next to focus

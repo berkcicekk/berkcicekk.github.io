@@ -56,12 +56,12 @@
       /* ---- works deck: projects stacked in 3D, scroll walks the stack ---- */
       .deck-card {
         position: relative; display: block; overflow: hidden; border-radius: 14px;
-        background: #0B0B0C; outline: none;
-        box-shadow: 0 0 0 1px rgba(247,247,245,.09), 0 34px 70px -24px rgba(0,0,0,.75);
+        background: #1C1C1F; outline: none;
+        box-shadow: 0 0 0 1px rgba(247,247,245,.1), 0 34px 70px -24px rgba(0,0,0,.9);
       }
       .deck-chrome {
         position: relative; display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
-        background: #0B0B0C; border-bottom: 1px solid rgba(247,247,245,.08);
+        background: #1C1C1F; border-bottom: 1px solid rgba(247,247,245,.08);
         font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: .1em; color: rgba(247,247,245,.45);
       }
       .deck-chrome i { width: 7px; height: 7px; border-radius: 999px; background: rgba(247,247,245,.16); }
@@ -77,16 +77,13 @@
       .deck-ui { display: none; }
 
       /* live deck */
-      .deck-live .deck-sticky { position: sticky; top: 0; height: 100vh; height: 100dvh; padding: 14px 0; }
-      .deck-live .deck-frame {
-        position: relative; height: 100%; overflow: hidden; border-radius: 2rem; background-color: #1C1C1F;
-        background-image: radial-gradient(rgba(247,247,245,.07) 1px, transparent 1.3px); background-size: 22px 22px;
-      }
+      .deck-live .deck-sticky { position: sticky; top: 0; height: 100vh; height: 100dvh; padding: 24px 0; }
+      .deck-live .deck-frame { position: relative; height: 100%; overflow: hidden; }
       .deck-live .deck-frame::before, .deck-live .deck-frame::after {
         content: ''; position: absolute; left: 0; right: 0; height: 14%; z-index: 200; pointer-events: none;
       }
-      .deck-live .deck-frame::before { top: 0; background: linear-gradient(#1C1C1F 45%, rgba(28,28,31,0)); }
-      .deck-live .deck-frame::after { bottom: 0; background: linear-gradient(rgba(28,28,31,0), #1C1C1F 60%); }
+      .deck-live .deck-frame::before { top: 0; background: linear-gradient(#0B0B0C 25%, rgba(11,11,12,0)); }
+      .deck-live .deck-frame::after { bottom: 0; background: linear-gradient(rgba(11,11,12,0), #0B0B0C 60%); }
       .deck-live .deck-stage { position: absolute; inset: 0; display: block; padding: 0; perspective: 2200px; perspective-origin: 50% 50%; }
       .deck-live .deck-item { display: contents; }
       .deck-live .deck-card {
@@ -97,10 +94,9 @@
       .deck-live .deck-meta { display: none; }
       .deck-live .deck-ui { display: block; position: absolute; z-index: 300; }
 
-      .deck-live .deck-top { left: 28px; right: 28px; top: 22px; display: flex; justify-content: space-between; gap: 1rem; }
-      .deck-left { left: 28px; top: 50%; transform: translateY(-50%); width: 210px; }
-      .deck-right { right: 28px; top: 50%; transform: translateY(-50%); width: 210px; text-align: right; }
-      .deck-live .deck-bottom { left: 28px; right: 28px; bottom: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
+      .deck-left { left: 0; top: 50%; transform: translateY(-50%); width: 210px; }
+      .deck-right { right: 0; top: 50%; transform: translateY(-50%); width: 210px; text-align: right; }
+      .deck-live .deck-bottom { left: 0; right: 0; bottom: 8px; display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
       .deck-tags li { display: block; }
       .deck-link { white-space: nowrap; }
       .deck-ui [hidden] { display: none !important; }
@@ -109,14 +105,12 @@
       .deck-swap { animation: deckSwap .55s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--sd, 0ms); }
 
       @media (max-width: 767.98px) {
-        .deck-live .deck-sticky { padding: 10px 0; }
-        .deck-live .deck-frame { border-radius: 1.4rem; }
-        .deck-live .deck-stage { inset: 92px 0 150px; }
-        .deck-live .deck-top { left: 18px; right: 18px; top: 16px; }
-        .deck-left { left: 18px; top: 44px; transform: none; width: auto; }
-        .deck-right { right: 18px; top: 44px; transform: none; width: auto; }
+        .deck-live .deck-sticky { padding: 16px 0; }
+        .deck-live .deck-stage { inset: 56px 0 150px; }
+        .deck-left { left: 0; top: 12px; transform: none; width: auto; }
+        .deck-right { right: 0; top: 12px; transform: none; width: auto; }
         .deck-right .deck-tags { display: none; }
-        .deck-live .deck-bottom { left: 18px; right: 18px; bottom: 18px; flex-direction: column; align-items: flex-start; gap: .9rem; }
+        .deck-live .deck-bottom { left: 0; right: 0; bottom: 8px; flex-direction: column; align-items: flex-start; gap: .9rem; }
         .deck-desc-ui { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
       }
     </style>
@@ -170,12 +164,6 @@
       <section id="works-deck" class="deck mt-10" aria-label="Projects">
         <div class="deck-sticky">
           <div class="deck-frame">
-
-            <div class="deck-ui deck-top micro text-paper/40">
-              <span>( rbc:works )</span>
-              <span class="hidden md:inline" data-i18n="deck.hint">scroll · hover · click</span>
-              <span><span id="deck-total">05</span> <span data-i18n="deck.projects">projects</span></span>
-            </div>
 
             <div class="deck-ui deck-left">
               <p class="micro text-paper/40"><span id="deck-idx" class="text-accent">01</span> / <span id="deck-of">05</span></p>
@@ -322,7 +310,6 @@
             receivables: 'On-chain receivable financing: Soroban contracts, a SEP-6 fiat rail, and a discount computed from live chain data. 1st place — Rise In x Stellar Pro Hackathon 2026.',
             wip: '2026 · In progress',
           },
-          deck: { hint: 'scroll · hover · click', projects: 'projects' },
           work: { indexTitle: '( Work index )', indexNote: 'Currently building: CENK — 5G security research, confidential', wip: '2026 · In progress' },
         },
         tr: {
@@ -335,7 +322,6 @@
             receivables: 'Zincir üstü alacak finansmanı: Soroban kontratları, SEP-6 fiat köprüsü ve canlı zincir verisinden hesaplanan iskonto. Rise In x Stellar Pro Hackathon 2026 birincisi.',
             wip: '2026 · Devam ediyor',
           },
-          deck: { hint: 'kaydır · üzerine gel · tıkla', projects: 'proje' },
           work: { indexTitle: '( İş dizini )', indexNote: 'Şu an geliştiriliyor: CENK — 5G güvenlik araştırması, gizli', wip: '2026 · Devam ediyor' },
         },
         de: {
@@ -348,7 +334,6 @@
             receivables: 'On-Chain-Forderungsfinanzierung: Soroban-Contracts, eine SEP-6-Fiat-Anbindung und ein aus Live-Chain-Daten berechneter Diskont. Platz 1 — Rise In x Stellar Pro Hackathon 2026.',
             wip: '2026 · In Arbeit',
           },
-          deck: { hint: 'scrollen · hovern · klicken', projects: 'Projekte' },
           work: { indexTitle: '( Arbeitsindex )', indexNote: 'Aktuell: CENK — 5G-Sicherheitsforschung, vertraulich', wip: '2026 · In Arbeit' },
         },
       };
