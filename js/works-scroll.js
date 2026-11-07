@@ -26,7 +26,9 @@
   ui.total.textContent = pad(N);
 
   const STEP_VH = 70;          // scroll distance per project
-  const MAX_TILT = 60;         // degrees, for cards far from focus
+  const MAX_TILT = 68;         // degrees, for the cards next to focus
+  const DWELL = 0.2;           // share of each step where the focused card holds still
+  const smooth = (u) => u * u * (3 - 2 * u);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
   let live = false;
@@ -76,7 +78,7 @@
     if (mobile.matches) {
       W = Math.min(r.width - 36, (r.height * 0.5) * 1.6);
     } else {
-      W = Math.min(880, r.width - 2 * 250, r.height * 0.44 * 1.6);
+      W = Math.min(860, r.width - 2 * 250, r.height * 0.42 * 1.6);
     }
     W = Math.max(220, W);
     H = W / 1.6;
@@ -86,22 +88,27 @@
   const readScroll = () => {
     const total = deck.offsetHeight - window.innerHeight;
     const prog = total > 0 ? clamp(-deck.getBoundingClientRect().top / total, 0, 1) : 0;
-    pTarget = prog * (N - 1);
+    // hold each card flat for a stretch of scroll, then move quickly to the next
+    const raw = prog * (N - 1);
+    const i = Math.min(Math.floor(raw), N - 2);
+    const g = clamp((raw - i - DWELL) / (1 - 2 * DWELL), 0, 1);
+    pTarget = N > 1 ? i + smooth(g) : 0;
   };
 
   // Shingled stack: the focused card sits flat in the middle; the next card on
   // each side tucks under it at distance A, and every card after that peeks out
   // by a strip of height B, like the edges of a fanned deck.
   const layout = () => {
-    const A = H * 0.62, B = H * 0.2;
+    const A = H * 0.66, B = H * 0.15;
     for (let i = 0; i < N; i++) {
       const d = i - p;
       const t = Math.abs(d);
       const hb = boost[i];
       const y = t <= 1 ? d * A : Math.sign(d) * (A + (t - 1) * B);
       // cards above lean their bottom edge toward you, cards below their top edge
-      const ang = -Math.sign(d) * (1 - Math.exp(-2.4 * t)) * MAX_TILT * (1 - 0.6 * hb);
-      const sc = 1 - 0.07 * Math.min(t, 4) + 0.05 * hb;
+      const tilt = MAX_TILT * smooth(Math.min(t / 0.7, 1)) + 3 * clamp(t - 1, 0, 2);
+      const ang = -Math.sign(d) * tilt * (1 - 0.6 * hb);
+      const sc = 1 - 0.06 * Math.min(t, 4) + 0.05 * hb;
       const c = cards[i];
       c.style.transform = `translate3d(-50%, -50%, 0) translateY(${y.toFixed(1)}px) rotateX(${ang.toFixed(2)}deg) scale(${sc.toFixed(4)})`;
       c.style.zIndex = String(100 - Math.round(t * 10) + Math.round(hb * 40));
